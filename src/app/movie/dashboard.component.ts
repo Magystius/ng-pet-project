@@ -6,14 +6,21 @@ import {Movie} from './movie';
 @Component({
   selector: 'app-dashboard',
   template: `
-    <ul>
-      <li *ngFor="let movie of movies$|async">
-        {{movie.title}} - {{movie.description}}
-      </li>
-    </ul>
+    <mat-grid-list cols="3" rowHeight="200px">
+      <mat-grid-tile *ngFor="let movie of movies$|async">
+        <mat-card class="movie-card">
+          <mat-card-title>{{movie.title}}</mat-card-title>
+          <mat-card-content>{{movie.description}}</mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
     <h4>{{movieCounter$ | async}}</h4>
   `,
-  styles: []
+  styles: [`
+    .movie-card {
+      width: 400px;
+    }
+  `]
 })
 export class DashboardComponent implements OnInit {
 
