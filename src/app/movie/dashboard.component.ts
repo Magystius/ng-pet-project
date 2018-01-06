@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MovieService} from './movie.service';
 import {Subject} from 'rxjs/Subject';
 import {Movie} from './movie';
+import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +15,7 @@ import {Movie} from './movie';
         </mat-card>
       </mat-grid-tile>
     </mat-grid-list>
-    <h4>{{movieCounter$ | async}}</h4>
+    <app-movie-counter [movies]="movieCounter$ | async"></app-movie-counter>
   `,
   styles: [`
     .movie-card {
@@ -35,4 +36,5 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.movieService.getMovies();
   }
+
 }

@@ -11,12 +11,10 @@ import {ConnectableObservable} from 'rxjs/observable/ConnectableObservable';
 @Injectable()
 export class MovieService {
 
-  public movies$: Subject<Array<Movie>>;
-  public movieCounter$: Subject<number>;
+  public movies$: Subject<Array<Movie>> = new Subject();
+  public movieCounter$: Subject<number> = new Subject();
 
   constructor(private http: HttpClient) {
-    this.movies$ = new Subject();
-    this.movieCounter$ = new Subject();
   }
 
   public getMovies(): void {
@@ -28,7 +26,7 @@ export class MovieService {
     request$
       .subscribe(movies => this.movies$.next(movies),
         (error: HttpErrorResponse) => {
-          this.logError(error);
+          this._logError(error);
           this.movies$.error(error);
         });
 
@@ -36,7 +34,7 @@ export class MovieService {
       .map(movies => movies.length)
       .subscribe(numberOfMovies => this.movieCounter$.next(numberOfMovies),
         (error: HttpErrorResponse) => {
-          this.logError(error);
+          this._logError(error);
           this.movieCounter$.error(error);
         });
 
@@ -49,7 +47,7 @@ export class MovieService {
       .retry(3);
   }
 
-  private logError(error: HttpErrorResponse): void {
+  private _logError(error: HttpErrorResponse): void {
     error.error instanceof Error ?
       console.log('error occured: ' + error.message) : console.log('server responsed with error: ' + error.message);
   }

@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {MovieService} from './movie.service';
 import {DashboardComponent} from './dashboard.component';
 import {NgMaterialModule} from '../ng-material/ng-material.module';
+import {MovieCounterComponent} from './movie-counter.component';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import {NgMaterialModule} from '../ng-material/ng-material.module';
     MovieService
   ],
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    MovieCounterComponent
   ],
   exports: [
     DashboardComponent
