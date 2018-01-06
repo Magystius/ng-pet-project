@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~@angular/material/theming';
 @import url('//fonts.googleapis.com/icon?family=Material+Icons');
+@import '~@angular/material/theming';
+@import "~bootstrap/dist/css/bootstrap.min.css";
 
 @include mat-core();
 
@@ -15,6 +16,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 body {
   font-family: $mat-font-family;
   font-weight: normal;
+  padding-top: 5rem;
 }
 
 h1, h2, h3, h4 {
