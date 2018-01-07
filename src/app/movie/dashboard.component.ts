@@ -3,13 +3,14 @@ import {MovieService} from './movie.service';
 import {Subject} from 'rxjs/Subject';
 import {Movie} from './movie';
 import 'rxjs/add/operator/switchMap';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-dashboard',
   template: `
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-6 col-md-3" *ngFor="let movie of movies$|async">
+        <div class="col-sm-6 col-md-3" *ngFor="let movie of topMovies$|async">
           <mat-card class="movie-card">
             <mat-card-title>{{movie.title}}</mat-card-title>
             <mat-card-subtitle>{{movie.genre | uppercase}}</mat-card-subtitle>
@@ -43,11 +44,11 @@ import 'rxjs/add/operator/switchMap';
 })
 export class DashboardComponent implements OnInit {
 
-  movies$: Subject<Array<Movie>>;
+  topMovies$: Observable<Array<Movie>>;
   movieCounter$: Subject<number>;
 
   constructor(private movieService: MovieService) {
-    this.movies$ = movieService.movies$;
+    this.topMovies$ = movieService.movies$.map(movies => movies.sort((a, b) => b.rating - a.rating).slice(0, 4));
     this.movieCounter$ = movieService.movieCounter$;
   }
 
