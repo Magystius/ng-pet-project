@@ -21,13 +21,13 @@ import 'rxjs/add/operator/takeWhile';
 export class MovieCounterComponent implements OnDestroy {
 
   public currentCounterValue = 0;
-  private _counterSub$: Subject<number> = new Subject();
+  private _counterSubject$: Subject<number> = new Subject();
   private _subscription: Subscription;
 
   constructor() {
-    this._subscription = this._counterSub$
+    this._subscription = this._counterSubject$
       .switchMap(endRange => {
-        return timer(0, 50)
+        return timer(0, 100)
           .mapTo(1)
           .startWith(this.currentCounterValue)
           .scan((acc, currentValue) => acc + currentValue)
@@ -38,7 +38,7 @@ export class MovieCounterComponent implements OnDestroy {
 
   @Input()
   set movies(endRange: number) {
-    this._counterSub$.next(endRange);
+    this._counterSubject$.next(endRange);
   }
 
   ngOnDestroy() {

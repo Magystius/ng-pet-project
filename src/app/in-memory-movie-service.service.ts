@@ -16,13 +16,13 @@ export class InMemoryMovieServiceService implements InMemoryDbService {
     movies.push(new Movie(3, 'Pulp Fiction', Genre.ACTION,
       'The lives of two mob hitmen, a boxer, a gangster\'s wife, and a pair of diner bandits intertwine in four tales of violence and redemption.',
       ['John Travolta', 'Uma Thurman', 'Samuel L. Jackson'], 8));
-    movies.push(new Movie(4, 'The Prestige', Genre.ACTION,
+    movies.push(new Movie(4, 'The Prestige', Genre.MYSTERY,
       'After a tragic accident two stage magicians engage in a battle to create the ultimate illusion whilst sacrificing everything they have to outwit the other.',
       ['Christian Bale', 'Hugh Jackman', 'Scarlett Johansson'], 8));
-    movies.push(new Movie(5, 'The Sixth Sense', Genre.ACTION,
+    movies.push(new Movie(5, 'The Sixth Sense', Genre.THRILLER,
       'A boy who communicates with spirits seeks the help of a disheartened child psychologist.',
       ['Bruce Willis', 'Haley Joel Osment', 'Toni Collette'], 8));
-    movies.push(new Movie(6, 'Sharknado', Genre.ACTION,
+    movies.push(new Movie(6, 'Sharknado', Genre.COMEDY,
       'When a freak hurricane swamps Los Angeles, nature\'s deadliest killer rules sea, land, and air as thousands of sharks terrorize the waterlogged populace.',
       ['Ian Ziering', 'Tara Reid', 'John Heard'], 3));
     return {movies};

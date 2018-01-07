@@ -7,19 +7,37 @@ import 'rxjs/add/operator/switchMap';
 @Component({
   selector: 'app-dashboard',
   template: `
-    <mat-grid-list cols="3" rowHeight="200px">
-      <mat-grid-tile *ngFor="let movie of movies$|async">
-        <mat-card class="movie-card">
-          <mat-card-title>{{movie.title}}</mat-card-title>
-          <mat-card-content>{{movie.description}}</mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-    </mat-grid-list>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6 col-md-3" *ngFor="let movie of movies$|async">
+          <mat-card class="movie-card">
+            <mat-card-title>{{movie.title}}</mat-card-title>
+            <mat-card-subtitle>{{movie.genre | uppercase}}</mat-card-subtitle>
+            <img mat-card-image src="/assets/science-fiction.jpg">
+            <mat-card-content>
+              <ul>
+                <li *ngFor="let actor of movie.actors">
+                  {{actor}}
+                </li>
+              </ul>
+              {{movie.description}}
+            </mat-card-content>
+            <mat-card-footer>{{movie.rating}}</mat-card-footer>
+
+          </mat-card>
+        </div>
+      </div>
+    </div>
     <app-movie-counter [movies]="movieCounter$ | async"></app-movie-counter>
   `,
   styles: [`
+    .col-md-3 {
+      display: flex;
+      flex-direction: column;
+    }
     .movie-card {
-      width: 400px;
+      margin-top: 10px;
+      flex: 1;
     }
   `]
 })
