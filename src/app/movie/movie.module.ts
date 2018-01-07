@@ -4,11 +4,13 @@ import {MovieService} from './movie.service';
 import {DashboardComponent} from './dashboard.component';
 import {NgMaterialModule} from '../ng-material/ng-material.module';
 import {MovieCounterComponent} from './movie-counter.component';
+import {MessageModule} from '../message/message.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    NgMaterialModule
+    NgMaterialModule,
+    MessageModule
   ],
   providers: [
     MovieService

@@ -4,13 +4,16 @@ import {Subject} from 'rxjs/Subject';
 import {Movie} from './movie';
 import 'rxjs/add/operator/switchMap';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/share';
 
 @Component({
   selector: 'app-dashboard',
   template: `
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-6 col-md-3" *ngFor="let movie of topMovies$|async">
+      <div class="row" *ngIf="topMovies$ | async as movies; else loading">
+        <ng-template #loading>Loading User Data...</ng-template>
+        <h1 *ngIf="!movies.length">No Movies Found!</h1>
+        <div class="col-sm-6 col-md-3" *ngFor="let movie of movies">
           <mat-card class="movie-card">
             <mat-card-title>{{movie.title}}</mat-card-title>
             <mat-card-subtitle>{{movie.genre | uppercase}}</mat-card-subtitle>

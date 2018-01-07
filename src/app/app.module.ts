@@ -6,9 +6,10 @@ import {MovieModule} from './movie/movie.module';
 import {HttpClientModule} from '@angular/common/http';
 import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {InMemoryMovieServiceService} from './in-memory-movie-service.service';
-import {AppRoutingModule} from './/app-routing.module';
+import {AppRoutingModule} from './app-routing.module';
 import {LandingPageComponent} from './pages/landing-page.component';
 import {NotFoundPageComponent} from './pages/not-found-page.component';
+import {MessageModule} from './message/message.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {NotFoundPageComponent} from './pages/not-found-page.component';
     }),
     NgMaterialModule,
     AppRoutingModule,
-    MovieModule
+    MovieModule,
+    MessageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
