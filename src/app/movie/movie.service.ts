@@ -41,11 +41,11 @@ export class MovieService {
 
     request$.connect();
 
-    this.messageService.show('MovieService: fetched movies');
+    this.messageService.info('MovieService: fetched movies');
   }
 
   public getMovie(movieId: string): Observable<Movie> {
-    this.messageService.show('MovieService: fetched movie #' + movieId);
+    this.messageService.info('MovieService: fetched movie #' + movieId);
 
     return this.http
       .get<Movie>('/api/movies/' + movieId)
@@ -53,7 +53,7 @@ export class MovieService {
   }
 
   private _logError(error: HttpErrorResponse): void {
-    this.messageService.show('MovieService: error occured: ' + error.message);
+    this.messageService.error('MovieService: error occured: ' + error.message);
     error.error instanceof Error ?
       console.log('error occured: ' + error.message) : console.log('server responsed with error: ' + error.message);
   }

@@ -5,19 +5,19 @@ import {Movie} from './movie';
 import 'rxjs/add/operator/switchMap';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
+import {Genre} from './genre.enum';
 
 @Component({
   selector: 'app-dashboard',
   template: `
     <div class="container-fluid">
       <div class="row" *ngIf="topMovies$ | async as movies; else loading">
-        <ng-template #loading>Loading User Data...</ng-template>
         <h1 *ngIf="!movies.length">No Movies Found!</h1>
         <div class="col-sm-6 col-md-3" *ngFor="let movie of movies">
           <mat-card class="movie-card">
             <mat-card-title>{{movie.title}}</mat-card-title>
             <mat-card-subtitle>{{movie.genre | uppercase}}</mat-card-subtitle>
-            <img mat-card-image src="/assets/science-fiction.jpg">
+            <img mat-card-image [src]="getImageId(movie.genre)">
             <mat-card-content>
               <ul>
                 <li *ngFor="let actor of movie.actors">
@@ -27,10 +27,10 @@ import 'rxjs/add/operator/share';
               {{movie.description}}
             </mat-card-content>
             <mat-card-footer>{{movie.rating}}</mat-card-footer>
-
           </mat-card>
         </div>
       </div>
+      <ng-template #loading>Loading User Data...</ng-template>
     </div>
     <app-movie-counter [movies]="movieCounter$ | async"></app-movie-counter>
   `,
@@ -59,4 +59,7 @@ export class DashboardComponent implements OnInit {
     this.movieService.getMovies();
   }
 
+  public getImageId(genre: Genre) {
+   return '/assets/science-fiction.jpg';
+  }
 }

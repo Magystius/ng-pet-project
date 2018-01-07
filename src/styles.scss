@@ -23,6 +23,23 @@ h1, h2, h3, h4 {
   font-weight: normal;
 }
 
-.notification {
-  z-index: 1; position: relative;
+%notification {
+  z-index: 1;
+  position: relative;
+  color: rgb(255, 255, 255);
+}
+
+.notification-info {
+  @extend %notification;
+  background-color: rgb(23, 162, 184);
+}
+
+.notification-success {
+  @extend %notification;
+  background-color: rgb(40, 167, 69);
+}
+
+.notification-error {
+  @extend %notification;
+  background-color: rgb(220, 53, 69);
 }
