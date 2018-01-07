@@ -11,6 +11,7 @@ import {Genre} from './genre.enum';
   selector: 'app-dashboard',
   template: `
     <div class="container-fluid">
+      <h1>Top Movies:</h1>
       <div class="row" *ngIf="topMovies$ | async as movies; else loading">
         <h1 *ngIf="!movies.length">No Movies Found!</h1>
         <div class="col-sm-6 col-md-3" *ngFor="let movie of movies">
@@ -19,14 +20,18 @@ import {Genre} from './genre.enum';
             <mat-card-subtitle>{{movie.genre | uppercase}}</mat-card-subtitle>
             <img mat-card-image [src]="getImageId(movie.genre)">
             <mat-card-content>
-              <ul>
-                <li *ngFor="let actor of movie.actors">
+              <h6>Actors:</h6>
+              <ul class="list-group">
+                <li class="list-group-item actor" *ngFor="let actor of movie.actors">
                   {{actor}}
                 </li>
               </ul>
-              {{movie.description}}
+              <hr/>
+              <h6>Description:</h6>
+              <p>{{movie.description}}</p>
+              <hr/>
             </mat-card-content>
-            <mat-card-footer>{{movie.rating}}</mat-card-footer>
+            <mat-card-footer><h6>Rating: <span>{{movie.rating}} / 10</span></h6></mat-card-footer>
           </mat-card>
         </div>
       </div>
@@ -35,6 +40,13 @@ import {Genre} from './genre.enum';
     <app-movie-counter [movies]="movieCounter$ | async"></app-movie-counter>
   `,
   styles: [`
+    h1 {
+      text-align: center;
+    }
+    h6 {
+      font-weight: bold;
+      color: gray;
+    }
     .col-md-3 {
       display: flex;
       flex-direction: column;
@@ -42,6 +54,9 @@ import {Genre} from './genre.enum';
     .movie-card {
       margin-top: 10px;
       flex: 1;
+    }
+    .actor {
+      font-size: small;
     }
   `]
 })

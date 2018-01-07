@@ -10,10 +10,11 @@ import 'rxjs/add/operator/takeWhile';
 @Component({
   selector: 'app-movie-counter',
   template: `
-    <h3 class="movieCounter"> {{ currentCounterValue }}</h3>
+    <h1>Total Movie Counter: <span class="badge badge-success">{{ currentCounterValue }}</span></h1>
   `,
   styles: [`
-    .movieCounter {
+    h1 {
+      padding-top: 20px;
       text-align: center;
     }
   `]
