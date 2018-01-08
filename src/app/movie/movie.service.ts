@@ -53,6 +53,19 @@ export class MovieService {
       .do(movie => movie ? this.messageService.info(`MovieService: fetched movie #${movieId}`) : this.messageService.error(`MovieService: no movie for #${movieId}`));
   }
 
+  public deleteMovie(movie: number | Movie): void {
+    const id = typeof movie === 'number' ? movie : movie.id;
+    this.http
+      .delete<Movie>('/api/movies/' + id)
+      .retry(3)
+      .catch(error => {
+        this._logError(error);
+        return of(error);
+      })
+      .do(error => !error ? this.messageService.success(`MovieService: deleted movie #${movie}`) : this.messageService.error(`MovieService: no movie for #${movie}`))
+      .subscribe(() => this.getMovies());
+  }
+
   private _logError(error: HttpErrorResponse): void {
     error.error instanceof Error ? console.log('error occured: ' + error.message) : console.log('server responsed with error: ' + error.message);
   }

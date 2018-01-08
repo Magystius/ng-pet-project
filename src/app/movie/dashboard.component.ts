@@ -109,7 +109,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public onMovieDelete(id: number) {
-    alert('to delete: ' + id);
+    this.movieService.deleteMovie(id);
   }
 
   public onMovieEdit(id: number) {
