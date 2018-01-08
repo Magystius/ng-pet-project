@@ -17,7 +17,12 @@ import {Genre} from './genre.enum';
         <div class="col-sm-6 col-md-3" *ngFor="let movie of movies">
           <mat-card class="movie-card">
             <mat-card-title>{{movie.title}}</mat-card-title>
-            <mat-card-subtitle>{{movie.genre | uppercase}}</mat-card-subtitle>
+            <mat-card-subtitle>
+              <mat-chip-list>
+                <mat-chip color="primary">Rating: {{movie.rating}}</mat-chip>
+                <mat-chip color="primary">{{movie.genre | uppercase}}</mat-chip>
+              </mat-chip-list>
+            </mat-card-subtitle>
             <img mat-card-image [src]="getImageId(movie.genre)">
             <mat-card-content>
               <h6>Actors:</h6>
@@ -31,7 +36,10 @@ import {Genre} from './genre.enum';
               <p>{{movie.description}}</p>
               <hr/>
             </mat-card-content>
-            <mat-card-footer><h6>Rating: <span>{{movie.rating}} / 10</span></h6></mat-card-footer>
+            <mat-card-actions class="movie-card-actions">
+              <button mat-mini-fab class="movie-card-action" (click)="onMovieEdit(movie.id)"><i class="fas fa-edit"></i></button>
+              <button mat-mini-fab class="movie-card-action" (click)="onMovieDelete(movie.id)"><i class="fas fa-trash-alt"></i></button>
+            </mat-card-actions>
           </mat-card>
         </div>
       </div>
@@ -43,10 +51,6 @@ import {Genre} from './genre.enum';
     h1 {
       text-align: center;
     }
-    h6 {
-      font-weight: bold;
-      color: gray;
-    }
     .col-md-3 {
       display: flex;
       flex-direction: column;
@@ -54,6 +58,13 @@ import {Genre} from './genre.enum';
     .movie-card {
       margin-top: 10px;
       flex: 1;
+    }
+    .movie-card-actions {
+      text-align: right;
+    }
+    .movie-card-action {
+      margin-right: 10px;
+      margin-bottom: 5px;
     }
     .actor {
       font-size: small;
@@ -75,6 +86,33 @@ export class DashboardComponent implements OnInit {
   }
 
   public getImageId(genre: Genre) {
-   return '/assets/science-fiction.jpg';
+    switch (genre) {
+      case Genre.SCIENCE_FICTION: {
+        return '/assets/science-fiction.jpg';
+      }
+      case Genre.DRAMA: {
+        return '/assets/drama.jpg';
+      }
+      case Genre.THRILLER: {
+        return '/assets/thriller.jpg';
+      }
+      case Genre.ACTION: {
+        return '/assets/action.jpg';
+      }
+      case Genre.MYSTERY: {
+        return '/assets/mystery.jpg';
+      }
+      case Genre.COMEDY: {
+        return '/assets/comedy.jpg';
+      }
+    }
+  }
+
+  public onMovieDelete(id: number) {
+    alert('to delete: ' + id);
+  }
+
+  public onMovieEdit(id: number) {
+    alert('to edit: ' + id);
   }
 }

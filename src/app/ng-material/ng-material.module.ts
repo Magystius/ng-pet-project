@@ -1,16 +1,20 @@
 import {NgModule} from '@angular/core';
-import {MatCardModule, MatSnackBarModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatChipsModule, MatSnackBarModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
     MatCardModule,
     MatSnackBarModule,
+    MatChipsModule,
+    MatButtonModule,
     BrowserAnimationsModule
   ],
   exports: [
     MatCardModule,
     MatSnackBarModule,
+    MatChipsModule,
+    MatButtonModule,
     BrowserAnimationsModule
   ]
 })
