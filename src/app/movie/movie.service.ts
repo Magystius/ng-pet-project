@@ -5,9 +5,12 @@ import {Movie} from './movie';
 import 'rxjs/add/operator/retry';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/publish';
+import 'rxjs/add/operator/do';
 import {Observable} from 'rxjs/Observable';
 import {ConnectableObservable} from 'rxjs/observable/ConnectableObservable';
 import {MessageService} from '../message/message.service';
+import 'rxjs/add/operator/catch';
+import {of} from 'rxjs/observable/of';
 
 @Injectable()
 export class MovieService {
@@ -22,40 +25,36 @@ export class MovieService {
     const request$: ConnectableObservable<Array<Movie>> = this.http
       .get<Array<Movie>>('/api/movies')
       .retry(3)
+      .catch(error => {
+        this._logError(error);
+        return of([]);
+      })
+      .do(movies => movies.length ? this.messageService.info('MovieService: fetched movies') : this.messageService.error('MovieService: no movies found'))
       .publish();
 
     request$
-      .subscribe(movies => this.movies$.next(movies),
-        (error: HttpErrorResponse) => {
-          this._logError(error);
-          this.movies$.error(error);
-        });
+      .subscribe(movies => this.movies$.next(movies));
 
     request$
       .map(movies => movies.length)
-      .subscribe(numberOfMovies => this.movieCounter$.next(numberOfMovies),
-        (error: HttpErrorResponse) => {
-          this._logError(error);
-          this.movieCounter$.error(error);
-        });
+      .subscribe(numberOfMovies => this.movieCounter$.next(numberOfMovies));
 
     request$.connect();
-
-    this.messageService.info('MovieService: fetched movies');
   }
 
-  public getMovie(movieId: string): Observable<Movie> {
-    this.messageService.info('MovieService: fetched movie #' + movieId);
-
+  public getMovie(movieId: number): Observable<Movie> {
     return this.http
       .get<Movie>('/api/movies/' + movieId)
-      .retry(3);
+      .retry(3)
+      .catch(error => {
+        this._logError(error);
+        return of(null);
+      })
+      .do(movie => movie ? this.messageService.info(`MovieService: fetched movie #${movieId}`) : this.messageService.error(`MovieService: no movie for #${movieId}`));
   }
 
   private _logError(error: HttpErrorResponse): void {
-    this.messageService.error('MovieService: error occured: ' + error.message);
-    error.error instanceof Error ?
-      console.log('error occured: ' + error.message) : console.log('server responsed with error: ' + error.message);
+    error.error instanceof Error ? console.log('error occured: ' + error.message) : console.log('server responsed with error: ' + error.message);
   }
 
 }
