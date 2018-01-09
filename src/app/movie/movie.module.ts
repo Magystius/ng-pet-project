@@ -4,6 +4,7 @@ import {MovieService} from './movie.service';
 import {NgMaterialModule} from '../ng-material/ng-material.module';
 import {MovieCounterComponent} from './movie-counter.component';
 import {MessageModule} from '../message/message.module';
+import {MovieListComponent} from './movie-list.component';
 import {DashboardPageComponent} from './pages/dashboard-page.component';
 import {ResultsPageComponent} from './pages/results-page.component';
 
@@ -19,7 +20,8 @@ import {ResultsPageComponent} from './pages/results-page.component';
   declarations: [
     DashboardPageComponent,
     MovieCounterComponent,
-    ResultsPageComponent
+    ResultsPageComponent,
+    MovieListComponent
   ],
   exports: [
     DashboardPageComponent,
