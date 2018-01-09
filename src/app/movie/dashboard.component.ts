@@ -37,8 +37,8 @@ import {Genre} from './genre.enum';
               <hr/>
             </mat-card-content>
             <mat-card-actions class="movie-card-actions">
-              <button mat-mini-fab class="movie-card-action" (click)="onMovieEdit(movie.id)"><i class="fas fa-edit"></i></button>
-              <button mat-mini-fab class="movie-card-action" (click)="onMovieDelete(movie.id)"><i class="fas fa-trash-alt"></i></button>
+              <button mat-mini-fab class="movie-card-action" matTooltip="Edit!" matTooltipPosition="above" (click)="onMovieEdit(movie.id)"><i class="fas fa-edit"></i></button>
+              <button mat-mini-fab class="movie-card-action" matTooltip="Delete!" matTooltipPosition="above"  (click)="onMovieDelete(movie.id)"><i class="fas fa-trash-alt"></i></button>
             </mat-card-actions>
           </mat-card>
         </div>
