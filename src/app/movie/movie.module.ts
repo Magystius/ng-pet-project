@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MovieService} from './movie.service';
-import {DashboardComponent} from './dashboard.component';
 import {NgMaterialModule} from '../ng-material/ng-material.module';
 import {MovieCounterComponent} from './movie-counter.component';
 import {MessageModule} from '../message/message.module';
+import {DashboardPageComponent} from './pages/dashboard-page.component';
 
 @NgModule({
   imports: [
@@ -16,11 +16,11 @@ import {MessageModule} from '../message/message.module';
     MovieService
   ],
   declarations: [
-    DashboardComponent,
-    MovieCounterComponent
+    DashboardPageComponent,
+    MovieCounterComponent,
   ],
   exports: [
-    DashboardComponent
+    DashboardPageComponent
   ]
 })
 export class MovieModule {

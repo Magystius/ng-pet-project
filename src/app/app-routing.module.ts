@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {DashboardComponent} from './movie/dashboard.component';
 import {NotFoundPageComponent} from './pages/not-found-page.component';
 import {LandingPageComponent} from './pages/landing-page.component';
+import {DashboardPageComponent} from './movie/pages/dashboard-page.component';
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
-  {path: 'dashboard', component: DashboardComponent},
+  {path: 'dashboard', component: DashboardPageComponent},
   {path: '*', component: NotFoundPageComponent}
 ];
 

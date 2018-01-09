@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {MovieService} from './movie.service';
+import {MovieService} from '../movie.service';
 import {Subject} from 'rxjs/Subject';
-import {Movie} from './movie';
+import {Movie} from '../movie';
 import 'rxjs/add/operator/switchMap';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
-import {Genre} from './genre.enum';
+import {Genre} from '../genre.enum';
 
 @Component({
   selector: 'app-dashboard',
@@ -71,7 +71,7 @@ import {Genre} from './genre.enum';
     }
   `]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardPageComponent implements OnInit {
 
   topMovies$: Observable<Array<Movie>>;
   movieCounter$: Subject<number>;
