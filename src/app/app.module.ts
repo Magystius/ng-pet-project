@@ -10,6 +10,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {LandingPageComponent} from './pages/landing-page.component';
 import {NotFoundPageComponent} from './pages/not-found-page.component';
 import {MessageModule} from './message/message.module';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {MessageModule} from './message/message.module';
       delay: 500,
       delete404: true
     }),
+    FormsModule,
     NgMaterialModule,
     AppRoutingModule,
     MovieModule,

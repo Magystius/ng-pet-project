@@ -5,6 +5,7 @@ import {NgMaterialModule} from '../ng-material/ng-material.module';
 import {MovieCounterComponent} from './movie-counter.component';
 import {MessageModule} from '../message/message.module';
 import {DashboardPageComponent} from './pages/dashboard-page.component';
+import {ResultsPageComponent} from './pages/results-page.component';
 
 @NgModule({
   imports: [
@@ -18,9 +19,11 @@ import {DashboardPageComponent} from './pages/dashboard-page.component';
   declarations: [
     DashboardPageComponent,
     MovieCounterComponent,
+    ResultsPageComponent
   ],
   exports: [
-    DashboardPageComponent
+    DashboardPageComponent,
+    ResultsPageComponent
   ]
 })
 export class MovieModule {
