@@ -30,9 +30,9 @@ export class MovieListComponent implements OnInit {
   }
 
   public isMovieSelected(movie: Movie) {
-    const isActive = this.selectedMovies
+    const isActive = this.selectedMovies ? this.selectedMovies
       .map(current => current.id)
-      .some((currentId, index, movieIds) => movieIds.includes(movie.id));
+      .some((currentId, index, movieIds) => movieIds.includes(movie.id)) : false;
     return {
       'list-group-item': true,
       'active': isActive

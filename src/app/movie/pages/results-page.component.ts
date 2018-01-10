@@ -24,7 +24,7 @@ export class ResultsPageComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.query = params.query;
       this.movieService.searchMovie(params.query)
-        .subscribe((movies) => movies.length ? this.selectedMovies = movies : null);
+        .subscribe((movies) => movies.length ? this.selectedMovies = movies : []);
     });
   }
 
