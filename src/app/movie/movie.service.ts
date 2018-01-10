@@ -11,6 +11,7 @@ import {ConnectableObservable} from 'rxjs/observable/ConnectableObservable';
 import {MessageService} from '../message/message.service';
 import 'rxjs/add/operator/catch';
 import {of} from 'rxjs/observable/of';
+import {zip} from 'rxjs/observable/zip';
 
 @Injectable()
 export class MovieService {
@@ -29,7 +30,8 @@ export class MovieService {
         this._logError(error);
         return of([]);
       })
-      .do(movies => movies.length ? this.messageService.info('MovieService: fetched movies') : this.messageService.error('MovieService: no movies found'))
+      .do(movies => movies.length ? this.messageService.info('MovieService: fetched movies') :
+        this.messageService.error('MovieService: no movies found'))
       .publish();
 
     request$
@@ -50,7 +52,20 @@ export class MovieService {
         this._logError(error);
         return of(null);
       })
-      .do(movie => movie ? this.messageService.info(`MovieService: fetched movie #${movieId}`) : this.messageService.error(`MovieService: no movie for #${movieId}`));
+      .do(movie => movie ? this.messageService.info(`MovieService: fetched movie #${movieId}`) :
+        this.messageService.error(`MovieService: no movie for #${movieId}`));
+  }
+
+  public searchMovie(query: string): Observable<Array<Movie>> {
+    console.log('/api/movies/?title=/.*' + query + '.*/gi');
+    const queryByTitle: Observable<Array<Movie>> = this.createQuery('/api/movies/?title=.*' + query + '.*');
+    const queryByActor: Observable<Array<Movie>> = this.createQuery('/api/movies/?actors=.*' + query + '.*');
+
+    return zip(queryByTitle, queryByActor)
+      .map(movieLists => movieLists[0].concat(movieLists[1]))
+      .do(movie => movie ? this.messageService.info(`MovieService: found movie for query: ${query}`) :
+        this.messageService.error(`MovieService: no movie for query: ${query}`));
+
   }
 
   public deleteMovie(movie: number | Movie): void {
@@ -62,12 +77,23 @@ export class MovieService {
         this._logError(error);
         return of(error);
       })
-      .do(error => !error ? this.messageService.success(`MovieService: deleted movie #${movie}`) : this.messageService.error(`MovieService: no movie for #${movie}`))
+      .do(error => !error ? this.messageService.success(`MovieService: deleted movie #${movie}`) :
+        this.messageService.error(`MovieService: no movie for #${movie}`))
       .subscribe(() => this.getMovies());
   }
 
   private _logError(error: HttpErrorResponse): void {
-    error.error instanceof Error ? console.log('error occured: ' + error.message) : console.log('server responsed with error: ' + error.message);
+    error.error instanceof Error ? console.log('error occured: ' + error.message) :
+      console.log('server responsed with error: ' + error.message);
   }
 
+  private createQuery(url: string): Observable<Array<Movie>> {
+    return this.http
+      .get<Array<Movie>>(url)
+      .retry(3)
+      .catch(error => {
+        this._logError(error);
+        return of(null);
+      });
+  }
 }

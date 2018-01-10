@@ -6,7 +6,8 @@ import {MovieService} from './movie.service';
   selector: 'app-movie-list',
   template: `
     <ul class="list-group">
-      <li *ngFor="let movie of movies; let i = index" [class]="movie.id === selectedMovie.id ? 'list-group-item active' : 'list-group-item'">
+      <li *ngFor="let movie of movies; let i = index"
+          [ngClass]="isMovieSelected(movie)">
         {{i + 1}} - {{movie.title}}
       </li>
     </ul>
@@ -15,8 +16,8 @@ import {MovieService} from './movie.service';
 })
 export class MovieListComponent implements OnInit {
 
-  @Input() public selectedMovie: Movie;
-  @Output() public selectedMovieChange = new EventEmitter<Movie>();
+  @Input() public selectedMovies: Array<Movie>;
+  @Output() public selectedMoviesChange = new EventEmitter<Array<Movie>>();
 
   public movies: Array<Movie> = [];
 
@@ -26,6 +27,16 @@ export class MovieListComponent implements OnInit {
 
   ngOnInit() {
     this.movieService.getMovies();
+  }
+
+  public isMovieSelected(movie: Movie) {
+    const isActive = this.selectedMovies
+      .map(current => current.id)
+      .some((currentId, index, movieIds) => movieIds.includes(movie.id));
+    return {
+      'list-group-item': true,
+      'active': isActive
+    };
   }
 
 }

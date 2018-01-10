@@ -8,13 +8,13 @@ import {MovieService} from '../movie.service';
   template: `
     <h1>Results: </h1>
     <h4>searched query: {{query}}</h4>
-    <app-movie-list [(selectedMovie)]="selectedMovie"></app-movie-list>
+    <app-movie-list [(selectedMovies)]="selectedMovies"></app-movie-list>
   `,
   styles: []
 })
 export class ResultsPageComponent implements OnInit {
 
-  public selectedMovie: Movie;
+  public selectedMovies: Array<Movie>;
   public query: string;
 
   constructor(private route: ActivatedRoute, private movieService: MovieService) {
@@ -23,7 +23,9 @@ export class ResultsPageComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.query = params.query;
-      this.movieService.getMovie(params.query).subscribe((movie) => this.selectedMovie = movie);
+      this.movieService.searchMovie(params.query)
+        .do(movies => console.log(movies))
+        .subscribe((movies) => movies.length ? this.selectedMovies = movies : null);
     });
   }
 
