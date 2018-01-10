@@ -23,20 +23,13 @@ export class MovieService {
   }
 
   public getMovies(): void {
-    const request$: ConnectableObservable<Array<Movie>> = this.http
-      .get<Array<Movie>>('/api/movies')
-      .retry(3)
-      .catch(error => {
-        this._logError(error);
-        return of([]);
-      })
+    const request$: ConnectableObservable<Array<Movie>> = this.createGetRequest<Array<Movie>>('/api/movies')
       .do(movies => movies.length ? this.messageService.info('MovieService: fetched movies') :
         this.messageService.error('MovieService: no movies found'))
       .publish();
 
     request$
       .subscribe(movies => this.movies$.next(movies));
-
     request$
       .map(movies => movies.length)
       .subscribe(numberOfMovies => this.movieCounter$.next(numberOfMovies));
@@ -45,21 +38,15 @@ export class MovieService {
   }
 
   public getMovie(movieId: number): Observable<Movie> {
-    return this.http
-      .get<Movie>('/api/movies/' + movieId)
-      .retry(3)
-      .catch(error => {
-        this._logError(error);
-        return of(null);
-      })
+    return this.createGetRequest<Movie>('/api/movies/' + movieId)
       .do(movie => movie ? this.messageService.info(`MovieService: fetched movie #${movieId}`) :
         this.messageService.error(`MovieService: no movie for #${movieId}`));
   }
 
   public searchMovie(query: string): Observable<Array<Movie>> {
     console.log('/api/movies/?title=/.*' + query + '.*/gi');
-    const queryByTitle: Observable<Array<Movie>> = this.createQuery('/api/movies/?title=.*' + query + '.*');
-    const queryByActor: Observable<Array<Movie>> = this.createQuery('/api/movies/?actors=.*' + query + '.*');
+    const queryByTitle = this.createGetRequest<Array<Movie>>('/api/movies/?title=.*' + query + '.*');
+    const queryByActor = this.createGetRequest<Array<Movie>>('/api/movies/?actors=.*' + query + '.*');
 
     return zip(queryByTitle, queryByActor)
       .map(movieLists => movieLists[0].concat(movieLists[1]))
@@ -87,9 +74,9 @@ export class MovieService {
       console.log('server responsed with error: ' + error.message);
   }
 
-  private createQuery(url: string): Observable<Array<Movie>> {
+  private createGetRequest<T>(url: string): Observable<T> {
     return this.http
-      .get<Array<Movie>>(url)
+      .get<T>(url)
       .retry(3)
       .catch(error => {
         this._logError(error);
