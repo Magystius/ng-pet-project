@@ -4,6 +4,7 @@ import {
   MatSnackBarModule, MatSortModule, MatTableModule, MatTooltipModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LayoutModule} from '@angular/cdk/layout';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
+    LayoutModule,
     BrowserAnimationsModule
   ],
   exports: [
@@ -34,6 +36,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
+    LayoutModule,
     BrowserAnimationsModule
   ]
 })

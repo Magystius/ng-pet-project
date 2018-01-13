@@ -3,6 +3,7 @@ import {Movie} from './movie';
 import {MovieService} from './movie.service';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
+import {BreakpointObserver} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-movie-list',
@@ -91,6 +92,7 @@ import {SelectionModel} from '@angular/cdk/collections';
       overflow: auto;
       max-height: 500px;
     }
+
     .mat-cell {
       padding: 0px 20px 0 20px;
     }
@@ -99,8 +101,9 @@ import {SelectionModel} from '@angular/cdk/collections';
       overflow: initial;
       max-width: 75px;
     }
+
     .mat-column-description {
-      min-width: 200px;
+      min-width: 400px;
     }
   `]
 })
@@ -129,11 +132,14 @@ export class MovieListComponent implements OnInit, AfterViewInit {
   public selection = new SelectionModel<number>(true, []);
   private movies: Array<Movie> = [];
 
-  constructor(private movieService: MovieService) {
+  constructor(private movieService: MovieService, private breakpointObserver: BreakpointObserver) {
     this.movieService.movies$.subscribe(movies => {
       this.movies = movies;
       this.dataSource.data = movies;
     });
+    breakpointObserver.observe([
+      '(max-width: 1024px)'
+    ]).subscribe(result => this._determineDisplayedColumns(result.matches));
   }
 
   ngOnInit() {
@@ -152,7 +158,7 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     this.movies
       .filter(movie => !filteredMovieIds.includes(movie.id))
       .forEach(movie => this.selection.deselect(movie.id));
-    this.emitSelectedMovieChange();
+    this._emitSelectedMovieChange();
   }
 
   public clearFilter() {
@@ -166,23 +172,31 @@ export class MovieListComponent implements OnInit, AfterViewInit {
 
   public toggleAll() {
     this.isAllSelected() ? this.selection.clear() : this.dataSource.data.forEach(movie => this.selection.select(movie.id));
-    this.emitSelectedMovieChange();
+    this._emitSelectedMovieChange();
   }
 
   public toggleSelection(movieId: number) {
     this.selection.toggle(movieId);
-    this.emitSelectedMovieChange();
-  }
-
-  private emitSelectedMovieChange() {
-    this.selectedMoviesChange.emit(this.movies
-      .filter(movie => this.selection.selected.includes(movie.id)));
+    this._emitSelectedMovieChange();
   }
 
   public isMovieSelected(movie: Movie): any {
     return {
       'active': this.selection.selected ? this.selection.selected.includes(movie.id) : false
     };
+  }
+
+  private _emitSelectedMovieChange() {
+    this.selectedMoviesChange.emit(this.movies
+      .filter(movie => this.selection.selected.includes(movie.id)));
+  }
+
+  private _determineDisplayedColumns(smallScreen: boolean) {
+    if (smallScreen && this.displayedColumns.indexOf('description') !== -1) {
+      this.displayedColumns.splice(this.displayedColumns.indexOf('description'), 1);
+    } else if (this.displayedColumns.indexOf('description') === -1) {
+      this.displayedColumns.splice(this.displayedColumns.indexOf('genre') + 1, 0, 'description');
+    }
   }
 
 }
