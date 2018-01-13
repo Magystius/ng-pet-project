@@ -12,6 +12,7 @@ import {NotFoundPageComponent} from './pages/not-found-page.component';
 import {MessageModule} from './message/message.module';
 import {FormsModule} from '@angular/forms';
 import {NavbarComponent} from './elements/navbar.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {NavbarComponent} from './elements/navbar.component';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forFeature(InMemoryMovieServiceService, {
       apiBase: 'api/',

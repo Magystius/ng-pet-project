@@ -6,13 +6,19 @@ import {MovieService} from '../movie.service';
   selector: 'app-overview-page',
   template: `
     <h1>Overview</h1>
-    <div class="actions" *ngIf="checkedMovies.length">
-      <button mat-raised-button color="warn" matTooltip="Delete all the things!" matTooltipPosition="above" (click)="onDelete()">Delete!</button>
+    <div class="actions">
+      <h4>Available Actions: </h4>
+      <ng-container *ngIf="selectedMovie">
+        <button mat-raised-button color="accent" matTooltip="Save it forever!" matTooltipPosition="above" (click)="onSave()">Save!</button>
+      </ng-container>
+      <ng-container *ngIf="checkedMovies.length">
+        <button mat-raised-button color="warn" matTooltip="Delete all the things!" matTooltipPosition="above" (click)="onDelete()">Delete!</button>
+      </ng-container>
     </div>
     <app-movie-list [(checkedMovies)]="checkedMovies" (selectedMovieChange)="onSelectedMovieChange($event)"
                     [selectable]="true" [filterable]="true"></app-movie-list>
     <ng-container *ngIf="selectedMovie">
-      <app-movie-form></app-movie-form>
+      <app-movie-form [movie]="selectedMovie"></app-movie-form>
     </ng-container>
   `,
   styles: [`
@@ -44,5 +50,9 @@ export class OverviewPageComponent implements OnInit {
       this.selectedMovie = null;
     }
     this.checkedMovies.forEach(movie => this.movieService.deleteMovie(movie));
+  }
+
+  public onSave() {
+    // this.movieService.updateMovie(this.selectedMovie);
   }
 }

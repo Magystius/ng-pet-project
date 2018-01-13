@@ -1,9 +1,8 @@
 import {NgModule} from '@angular/core';
 import {
   MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule,
-  MatProgressSpinnerModule, MatSnackBarModule, MatSortModule, MatTableModule, MatTooltipModule
+  MatProgressSpinnerModule, MatSelectModule, MatSliderModule, MatSnackBarModule, MatSortModule, MatTableModule, MatTooltipModule
 } from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LayoutModule} from '@angular/cdk/layout';
 
 @NgModule({
@@ -20,9 +19,10 @@ import {LayoutModule} from '@angular/cdk/layout';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
+    MatSelectModule,
+    MatSliderModule,
     LayoutModule,
-    MatProgressSpinnerModule,
-    BrowserAnimationsModule
+    MatProgressSpinnerModule
   ],
   exports: [
     MatCardModule,
@@ -37,9 +37,10 @@ import {LayoutModule} from '@angular/cdk/layout';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
+    MatSelectModule,
+    MatSliderModule,
     LayoutModule,
-    MatProgressSpinnerModule,
-    BrowserAnimationsModule
+    MatProgressSpinnerModule
   ]
 })
 export class NgMaterialModule {

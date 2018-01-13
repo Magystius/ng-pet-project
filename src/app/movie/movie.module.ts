@@ -14,9 +14,13 @@ import {ListPipe} from '../pipes/list.pipe';
 import {LoadingComponent} from '../elements/loading.component';
 import {OverviewPageComponent} from './pages/overview-page.component';
 import {MovieFormComponent} from './movie-form.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     FormsModule,
     NgMaterialModule,
