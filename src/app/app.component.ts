@@ -13,7 +13,7 @@ import {Component} from '@angular/core';
   `,
   styles: [`
     .footer {
-      z-index: 0;
+      z-index: 1000;
       position: fixed;
     }
   `]
