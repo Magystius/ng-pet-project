@@ -30,7 +30,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
           </mat-header-cell>
           <mat-cell *matCellDef="let movie">
             <mat-checkbox (click)="$event.stopPropagation()"
-                          (change)="toggleSelection(movie.id)"
+                          (change)="toggleCheck(movie.id)"
                           [checked]="selection.isSelected(movie.id)">
             </mat-checkbox>
           </mat-cell>
@@ -60,7 +60,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
           <mat-cell *matCellDef="let movie"> {{movie.rating}}</mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let movie; columns: displayedColumns" [ngClass]="isMovieSelected(movie)" (click)="onSelectedMovie(movie)"></mat-row>
+        <mat-row *matRowDef="let movie; columns: displayedColumns" [ngClass]="isMovieChecked(movie)" (click)="onSelectedMovie(movie)"></mat-row>
       </mat-table>
       <mat-paginator #moviePaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
       </mat-paginator>
@@ -137,8 +137,12 @@ export class MovieListComponent implements OnInit, AfterViewInit {
 
   constructor(private movieService: MovieService, private breakpointObserver: BreakpointObserver) {
     this.movieService.movies$.subscribe(movies => {
-      this.movies = movies;
-      this.dataSource.data = movies;
+      this.dataSource.data = this.movies = movies;
+      const movieIds = movies.map(movie => movie.id);
+      this.selection.selected
+        .filter(id => !movieIds.includes(id))
+        .forEach(id => this.selection.deselect(id));
+      this._emitCheckedMovieChange();
     });
     breakpointObserver.observe([
       '(max-width: 1024px)'
@@ -164,7 +168,7 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     this.movies
       .filter(movie => !filteredMovieIds.includes(movie.id))
       .forEach(movie => this.selection.deselect(movie.id));
-    this._emitSelectedMovieChange();
+    this._emitCheckedMovieChange();
   }
 
   public clearFilter() {
@@ -178,21 +182,21 @@ export class MovieListComponent implements OnInit, AfterViewInit {
 
   public toggleAll() {
     this.isAllSelected() ? this.selection.clear() : this.dataSource.data.forEach(movie => this.selection.select(movie.id));
-    this._emitSelectedMovieChange();
+    this._emitCheckedMovieChange();
   }
 
-  public toggleSelection(movieId: number) {
+  public toggleCheck(movieId: number) {
     this.selection.toggle(movieId);
-    this._emitSelectedMovieChange();
+    this._emitCheckedMovieChange();
   }
 
-  public isMovieSelected(movie: Movie): any {
+  public isMovieChecked(movie: Movie): any {
     return {
       'active': this.selection.selected ? this.selection.selected.includes(movie.id) : false
     };
   }
 
-  private _emitSelectedMovieChange() {
+  private _emitCheckedMovieChange() {
     this.checkedMoviesChange.emit(this.movies
       .filter(movie => this.selection.selected.includes(movie.id)));
   }
