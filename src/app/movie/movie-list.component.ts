@@ -8,6 +8,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 @Component({
   selector: 'app-movie-list',
   template: `
+    <app-loading [isLoading]="isLoadingResults"></app-loading>
     <div class="movie-table-container mat-elevation-z8">
       <div class="movie-table-header" *ngIf="filterable">
         <mat-form-field>
@@ -125,6 +126,7 @@ export class MovieListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  public isLoadingResults = true;
   public dataSource = new MatTableDataSource<Movie>();
   public displayedColumns = ['id', 'title', 'genre', 'description', 'actors', 'rating'];
   public filterValue = '';
@@ -143,6 +145,9 @@ export class MovieListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.movieService.movies$
+      .takeWhile(() => this.isLoadingResults)
+      .subscribe(() => this.isLoadingResults = false);
     this.movieService.getMovies();
   }
 

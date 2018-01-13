@@ -10,6 +10,7 @@ import {Genre} from '../genre.enum';
 @Component({
   selector: 'app-dashboard',
   template: `
+    <app-loading [isLoading]="isLoadingResults"></app-loading>
     <div class="container-fluid">
       <h1>Top Movies:</h1>
       <div class="row" *ngIf="topMovies$ | async as movies; else loading">
@@ -73,8 +74,9 @@ import {Genre} from '../genre.enum';
 })
 export class DashboardPageComponent implements OnInit {
 
-  topMovies$: Observable<Array<Movie>>;
-  movieCounter$: Subject<number>;
+  public isLoadingResults = true;
+  public topMovies$: Observable<Array<Movie>>;
+  public movieCounter$: Subject<number>;
 
   constructor(private movieService: MovieService) {
     this.topMovies$ = movieService.movies$.map(movies => movies.sort((a, b) => b.rating - a.rating).slice(0, 4));
@@ -82,6 +84,9 @@ export class DashboardPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.movieService.movies$
+      .takeWhile(() => this.isLoadingResults)
+      .subscribe(() => this.isLoadingResults = false);
     this.movieService.getMovies();
   }
 

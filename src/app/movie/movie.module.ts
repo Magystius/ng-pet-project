@@ -11,6 +11,7 @@ import {FormsModule} from '@angular/forms';
 import {CapitalizePipe} from '../pipes/capitalize.pipe';
 import {TrimPipe} from '../pipes/trim.pipe';
 import {ListPipe} from '../pipes/list.pipe';
+import {LoadingComponent} from '../elements/loading.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import {ListPipe} from '../pipes/list.pipe';
     MovieListComponent,
     CapitalizePipe,
     TrimPipe,
-    ListPipe
+    ListPipe,
+    LoadingComponent
   ],
   exports: [
     DashboardPageComponent,

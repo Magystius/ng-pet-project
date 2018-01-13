@@ -23,7 +23,7 @@ import {FormsModule} from '@angular/forms';
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forFeature(InMemoryMovieServiceService, {
       apiBase: 'api/',
-      delay: 500,
+      delay: 2000,
       delete404: true
     }),
     FormsModule,
