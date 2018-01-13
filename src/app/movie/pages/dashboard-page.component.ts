@@ -14,7 +14,7 @@ import {Router} from '@angular/router';
     <app-loading [isLoading]="isLoadingResults"></app-loading>
     <div class="container-fluid">
       <h1>Top Movies:</h1>
-      <div class="row" *ngIf="topMovies$ | async as movies; else loading">
+      <div class="row" *ngIf="topMovies$ | async as movies">
         <h1 *ngIf="!movies.length">No Movies Found!</h1>
         <div class="col-sm-6 col-md-3" *ngFor="let movie of movies">
           <mat-card class="movie-card">
@@ -22,52 +22,57 @@ import {Router} from '@angular/router';
             <mat-card-subtitle>
               <mat-chip-list>
                 <mat-chip color="primary">Rating: {{movie.rating}}</mat-chip>
-                <mat-chip color="primary">{{movie.genre | uppercase}}</mat-chip>
+                <mat-chip color="primary">{{movie.genre | capitalize}}</mat-chip>
               </mat-chip-list>
             </mat-card-subtitle>
             <img mat-card-image [src]="getImageId(movie.genre)">
             <mat-card-content>
               <h6>Actors:</h6>
               <ul class="list-group">
-                <li class="list-group-item actor" *ngFor="let actor of movie.actors">
+                <li class="list-group-item actor" *ngFor="let actor of movie.actors | trim: 3">
                   {{actor}}
                 </li>
               </ul>
               <hr/>
               <h6>Description:</h6>
-              <p>{{movie.description}}</p>
+              <p>{{movie.description | trim: 200}}</p>
               <hr/>
             </mat-card-content>
             <mat-card-actions class="movie-card-actions">
-              <button mat-mini-fab class="movie-card-action" matTooltip="Edit!" matTooltipPosition="above" (click)="onMovieEdit(movie.id)"><i class="fas fa-edit"></i></button>
-              <button mat-mini-fab class="movie-card-action" matTooltip="Delete!" matTooltipPosition="above"  (click)="onMovieDelete(movie.id)"><i class="fas fa-trash-alt"></i></button>
+              <button mat-mini-fab class="movie-card-action" matTooltip="Edit!" matTooltipPosition="above" (click)="onMovieEdit(movie.id)"><i
+                class="fas fa-edit"></i></button>
+              <button mat-mini-fab class="movie-card-action" matTooltip="Delete!" matTooltipPosition="above" (click)="onMovieDelete(movie.id)"><i
+                class="fas fa-trash-alt"></i></button>
             </mat-card-actions>
           </mat-card>
         </div>
       </div>
-      <ng-template #loading>Loading User Data...</ng-template>
-    </div>
-    <app-movie-counter [movies]="movieCounter$ | async"></app-movie-counter>
+      <app-movie-counter [movies]="movieCounter$ | async"></app-movie-counter>
   `,
   styles: [`
     h1 {
       text-align: center;
     }
+
     .col-md-3 {
       display: flex;
       flex-direction: column;
     }
+
     .movie-card {
       margin-top: 10px;
       flex: 1;
     }
+
     .movie-card-actions {
       text-align: right;
     }
+
     .movie-card-action {
       margin-right: 10px;
       margin-bottom: 5px;
     }
+
     .actor {
       font-size: small;
     }

@@ -27,7 +27,7 @@ export class MovieService {
   }
 
   public getMovies(): void {
-    const request$: ConnectableObservable<Array<Movie>> = this.createGetRequest<Array<Movie>>('/api/movies')
+    const request$: ConnectableObservable<Array<Movie>> = this._createGetRequest<Array<Movie>>('/api/movies')
       .do(movies => movies.length ? this.messageService.info('MovieService: fetched movies') :
         this.messageService.error('MovieService: no movies found'))
       .publish();
@@ -42,15 +42,15 @@ export class MovieService {
   }
 
   public getMovie(movieId: number): Observable<Movie> {
-    return this.createGetRequest<Movie>('/api/movies/' + movieId)
+    return this._createGetRequest<Movie>('/api/movies/' + movieId)
       .do(movie => movie ? this.messageService.info(`MovieService: fetched movie #${movieId}`) :
         this.messageService.error(`MovieService: no movie for #${movieId}`));
   }
 
   public searchMovie(query: string): Observable<Array<Movie>> {
-    const queryByTitle = this.createGetRequest<Array<Movie>>('/api/movies/?title=.*' + query + '.*');
-    const queryByGenre = this.createGetRequest<Array<Movie>>('/api/movies/?genre=.*' + query + '.*');
-    const queryByActor = this.createGetRequest<Array<Movie>>('/api/movies/?actors=.*' + query + '.*');
+    const queryByTitle = this._createGetRequest<Array<Movie>>('/api/movies/?title=.*' + query + '.*');
+    const queryByGenre = this._createGetRequest<Array<Movie>>('/api/movies/?genre=.*' + query + '.*');
+    const queryByActor = this._createGetRequest<Array<Movie>>('/api/movies/?actors=.*' + query + '.*');
 
     return zip(queryByTitle, queryByGenre, queryByActor)
       .map(movieLists => movieLists[0].concat(movieLists[1]).concat(movieLists[2])) // TODO: optimize this
@@ -59,7 +59,7 @@ export class MovieService {
   }
 
   public createMovie(movie: Movie): void {
-    this.createGetRequest<Array<Movie>>('/api/movies/')
+    this._createGetRequest<Array<Movie>>('/api/movies/')
       .mergeMap(movies => from(movies))
       .max((a: Movie, b: Movie) => a.id < b.id ? -1 : 1)
       .map(movieWithHighestId => movieWithHighestId.id)
@@ -110,7 +110,7 @@ export class MovieService {
       console.log('server responsed with error: ' + error.message);
   }
 
-  private createGetRequest<T>(url: string): Observable<T> {
+  private _createGetRequest<T>(url: string): Observable<T> {
     return this.http
       .get<T>(url)
       .retry(3)
