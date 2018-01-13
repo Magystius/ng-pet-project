@@ -53,6 +53,6 @@ export class OverviewPageComponent implements OnInit {
   }
 
   public onSave() {
-    // this.movieService.updateMovie(this.selectedMovie);
+    this.movieService.updateMovie(this.selectedMovie);
   }
 }

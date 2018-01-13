@@ -54,6 +54,19 @@ export class MovieService {
         this.messageService.error(`MovieService: no movies for query: ${query}`));
   }
 
+  public updateMovie(movie: Movie): void {
+    this.http
+      .put<Movie>('/api/movies/' + movie.id, movie)
+      .retry(3)
+      .catch(error => {
+        this._logError(error);
+        return of(error);
+      })
+      .do(error => !error ? this.messageService.success(`MovieService: updated movie #${movie.id}`) :
+        this.messageService.error(`MovieService: no movie found for #${movie.id}`))
+      .subscribe(() => this.getMovies());
+  }
+
   public deleteMovie(movie: number | Movie): void {
     const id = typeof movie === 'number' ? movie : movie.id;
     this.http
