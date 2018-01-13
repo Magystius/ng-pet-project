@@ -60,7 +60,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
           <mat-cell *matCellDef="let movie"> {{movie.rating}}</mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let movie; columns: displayedColumns" [ngClass]="isMovieChecked(movie)" (click)="onSelectedMovie(movie)"></mat-row>
+        <mat-row *matRowDef="let movie; columns: displayedColumns" [ngClass]="getMovieStyle(movie)" (click)="onSelectedMovie(movie)"></mat-row>
       </mat-table>
       <mat-paginator #moviePaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
       </mat-paginator>
@@ -68,10 +68,14 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 
   `,
   styles: [`
-    .active {
+    .toggled {
       background-color: #b2dfdb;
     }
 
+    .selected {
+      background-color: #dcedc8;
+    }
+    
     .movie-table-header {
       min-height: 64px;
       padding: 8px 24px 12px;
@@ -134,6 +138,7 @@ export class MovieListComponent implements OnInit, AfterViewInit {
 
   public selection = new SelectionModel<number>(true, []);
   private movies: Array<Movie> = [];
+  private selectedMovie: Movie;
 
   constructor(private movieService: MovieService, private breakpointObserver: BreakpointObserver) {
     this.movieService.movies$.subscribe(movies => {
@@ -190,9 +195,10 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     this._emitCheckedMovieChange();
   }
 
-  public isMovieChecked(movie: Movie): any {
+  public getMovieStyle(movie: Movie): any {
     return {
-      'active': this.selection.selected ? this.selection.selected.includes(movie.id) : false
+      'toggled': this.selection.selected ? this.selection.selected.includes(movie.id) : false,
+      'selected': this.selectedMovie ? this.selectedMovie.id === movie.id : false
     };
   }
 
@@ -202,6 +208,7 @@ export class MovieListComponent implements OnInit, AfterViewInit {
   }
 
   public onSelectedMovie(movie: Movie) {
+    this.selectedMovie = movie;
     this.selectedMovieChange.emit(movie);
   }
 
