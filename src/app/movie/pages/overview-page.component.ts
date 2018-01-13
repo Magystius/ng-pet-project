@@ -8,15 +8,20 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
   template: `
     <app-loading [isLoading]="isLoadingResults"></app-loading>
     <h1>Overview</h1>
-    <div class="actions">
-      <h4>Available Actions: </h4>
-      <ng-container *ngIf="selectedMovie">
-        <button mat-raised-button color="accent" matTooltip="Save it forever!" matTooltipPosition="above" (click)="onSave()">Save!</button>
-      </ng-container>
-      <ng-container *ngIf="checkedMovies.length">
-        <button mat-raised-button color="warn" matTooltip="Delete all the things!" matTooltipPosition="above" (click)="onDelete()">Delete!</button>
-      </ng-container>
-    </div>
+    <mat-menu #movieMenu="matMenu">
+      <button mat-menu-item color="accent" (click)="onSave()" [disabled]="!selectedMovie">
+        <mat-icon>save</mat-icon>
+        <span>save movie</span>
+      </button>
+      <button mat-menu-item color="warn" (click)="onDelete()" [disabled]="!checkedMovies.length">
+        <mat-icon>delete_forever</mat-icon>
+        <span>delete checked movies</span>
+      </button>
+    </mat-menu>
+    <button class="movieMenu" mat-raised-button [matMenuTriggerFor]="movieMenu" color="primary">
+      <mat-icon>menu</mat-icon>
+      Actions
+    </button>
     <app-movie-list [(checkedMovies)]="checkedMovies" (selectedMovieChange)="onSelectedMovieChange($event)"
                     [selectable]="true" [filterable]="true"></app-movie-list>
     <ng-container *ngIf="selectedMovie">
@@ -27,8 +32,8 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
     h1 {
       margin-bottom: 30px;
     }
-    .actions {
-      padding: 10px;
+    .movieMenu {
+      margin-bottom: 20px;
     }
   `]
 })
