@@ -63,8 +63,8 @@ export class MovieService {
         this._logError(error);
         return of(error);
       })
-      .do(error => !error ? this.messageService.success(`MovieService: deleted movie #${movie}`) :
-        this.messageService.error(`MovieService: no movie for #${movie}`))
+      .do(error => !error ? this.messageService.success(`MovieService: deleted movie #${id}`) :
+        this.messageService.error(`MovieService: no movie for #${id}`))
       .subscribe(() => this.getMovies());
   }
 

@@ -12,6 +12,8 @@ import {CapitalizePipe} from '../pipes/capitalize.pipe';
 import {TrimPipe} from '../pipes/trim.pipe';
 import {ListPipe} from '../pipes/list.pipe';
 import {LoadingComponent} from '../elements/loading.component';
+import {OverviewPageComponent} from './pages/overview-page.component';
+import {MovieFormComponent} from './movie-form.component';
 
 @NgModule({
   imports: [
@@ -31,11 +33,14 @@ import {LoadingComponent} from '../elements/loading.component';
     CapitalizePipe,
     TrimPipe,
     ListPipe,
-    LoadingComponent
+    LoadingComponent,
+    OverviewPageComponent,
+    MovieFormComponent
   ],
   exports: [
     DashboardPageComponent,
-    ResultsPageComponent
+    ResultsPageComponent,
+    OverviewPageComponent
   ]
 })
 export class MovieModule {

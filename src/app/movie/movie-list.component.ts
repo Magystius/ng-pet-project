@@ -60,7 +60,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
           <mat-cell *matCellDef="let movie"> {{movie.rating}}</mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let movie; columns: displayedColumns" [ngClass]="isMovieSelected(movie)"></mat-row>
+        <mat-row *matRowDef="let movie; columns: displayedColumns" [ngClass]="isMovieSelected(movie)" (click)="onSelectedMovie(movie)"></mat-row>
       </mat-table>
       <mat-paginator #moviePaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
       </mat-paginator>
@@ -110,7 +110,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 })
 export class MovieListComponent implements OnInit, AfterViewInit {
   @Input()
-  set selectedMovies(movies: Array<Movie>) {
+  set checkedMovies(movies: Array<Movie>) {
     this.selection.clear();
     movies.forEach(movie => this.selection.select(movie.id));
   }
@@ -122,7 +122,8 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     selectable ? this.displayedColumns.unshift('select') : this.displayedColumns.filter(column => column !== 'select');
   }
 
-  @Output() public selectedMoviesChange = new EventEmitter<Array<Movie>>();
+  @Output() public checkedMoviesChange = new EventEmitter<Array<Movie>>();
+  @Output() public selectedMovieChange = new EventEmitter<Movie>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -192,8 +193,12 @@ export class MovieListComponent implements OnInit, AfterViewInit {
   }
 
   private _emitSelectedMovieChange() {
-    this.selectedMoviesChange.emit(this.movies
+    this.checkedMoviesChange.emit(this.movies
       .filter(movie => this.selection.selected.includes(movie.id)));
+  }
+
+  public onSelectedMovie(movie: Movie) {
+    this.selectedMovieChange.emit(movie);
   }
 
   private _determineDisplayedColumns(smallScreen: boolean) {
