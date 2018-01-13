@@ -6,6 +6,7 @@ import 'rxjs/add/operator/switchMap';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import {Genre} from '../genre.enum';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -78,7 +79,7 @@ export class DashboardPageComponent implements OnInit {
   public topMovies$: Observable<Array<Movie>>;
   public movieCounter$: Subject<number>;
 
-  constructor(private movieService: MovieService) {
+  constructor(private movieService: MovieService, private router: Router) {
     this.topMovies$ = movieService.movies$.map(movies => movies.sort((a, b) => b.rating - a.rating).slice(0, 4));
     this.movieCounter$ = movieService.movieCounter$;
   }
@@ -118,6 +119,6 @@ export class DashboardPageComponent implements OnInit {
   }
 
   public onMovieEdit(id: number) {
-    alert('to edit: ' + id);
+    this.router.navigate(['overview', id]);
   }
 }

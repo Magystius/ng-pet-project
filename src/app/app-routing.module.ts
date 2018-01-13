@@ -10,6 +10,7 @@ const routes: Routes = [
   {path: '', component: LandingPageComponent},
   {path: 'dashboard', component: DashboardPageComponent},
   {path: 'overview', component: OverviewPageComponent},
+  {path: 'overview/:id', component: OverviewPageComponent},
   {path: 'results/:query', component: ResultsPageComponent},
   {path: '*', component: NotFoundPageComponent}
 ];

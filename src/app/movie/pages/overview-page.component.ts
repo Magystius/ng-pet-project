@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Movie} from '../movie';
 import {MovieService} from '../movie.service';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 
 @Component({
   selector: 'app-overview-page',
   template: `
+    <app-loading [isLoading]="isLoadingResults"></app-loading>
     <h1>Overview</h1>
     <div class="actions">
       <h4>Available Actions: </h4>
@@ -32,17 +34,27 @@ import {MovieService} from '../movie.service';
 })
 export class OverviewPageComponent implements OnInit {
 
+  public isLoadingResults = false;
   public checkedMovies: Array<Movie> = [];
   public selectedMovie: Movie;
 
-  constructor(private movieService: MovieService) {
+  constructor(private movieService: MovieService, private router: Router, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.route.params.subscribe((params: Params) => {
+      if (params.id) {
+        this.isLoadingResults = true;
+        this.movieService.getMovie(params.id).subscribe(movie => {
+          this.selectedMovie = movie;
+          this.isLoadingResults = false;
+        });
+      }
+    });
   }
 
   public onSelectedMovieChange($event: Movie) {
-    this.selectedMovie = $event;
+    this.router.navigate(['overview', $event.id]);
   }
 
   public onDelete() {
