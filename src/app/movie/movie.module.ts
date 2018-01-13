@@ -8,6 +8,9 @@ import {MovieListComponent} from './movie-list.component';
 import {DashboardPageComponent} from './pages/dashboard-page.component';
 import {ResultsPageComponent} from './pages/results-page.component';
 import {FormsModule} from '@angular/forms';
+import {CapitalizePipe} from '../pipes/capitalize.pipe';
+import {TrimPipe} from '../pipes/trim.pipe';
+import {ListPipe} from '../pipes/list.pipe';
 
 @NgModule({
   imports: [
@@ -23,7 +26,10 @@ import {FormsModule} from '@angular/forms';
     DashboardPageComponent,
     MovieCounterComponent,
     ResultsPageComponent,
-    MovieListComponent
+    MovieListComponent,
+    CapitalizePipe,
+    TrimPipe,
+    ListPipe
   ],
   exports: [
     DashboardPageComponent,

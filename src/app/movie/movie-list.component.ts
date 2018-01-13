@@ -43,15 +43,15 @@ import {SelectionModel} from '@angular/cdk/collections';
         </ng-container>
         <ng-container matColumnDef="genre">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Genre</mat-header-cell>
-          <mat-cell *matCellDef="let movie"> {{movie.genre}}</mat-cell>
+          <mat-cell *matCellDef="let movie"> {{movie.genre | capitalize}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="description">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Description</mat-header-cell>
-          <mat-cell *matCellDef="let movie"> {{movie.description}}</mat-cell>
+          <mat-cell *matCellDef="let movie"> {{movie.description | trim: 100}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="actors">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Actors</mat-header-cell>
-          <mat-cell *matCellDef="let movie"> {{movie.actors}}</mat-cell>
+          <mat-cell *matCellDef="let movie"> {{movie.actors | list}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="rating">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Rating</mat-header-cell>
@@ -90,6 +90,9 @@ import {SelectionModel} from '@angular/cdk/collections';
     .mat-table {
       overflow: auto;
       max-height: 500px;
+    }
+    .mat-cell {
+      padding: 0px 20px 0 20px;
     }
 
     .mat-column-select {
