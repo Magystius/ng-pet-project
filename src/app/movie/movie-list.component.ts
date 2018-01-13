@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Movie} from './movie';
 import {MovieService} from './movie.service';
-import {MatSort, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 
 @Component({
   selector: 'app-movie-list',
@@ -45,6 +45,8 @@ import {MatSort, MatTableDataSource} from '@angular/material';
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let movie; columns: displayedColumns" [ngClass]="isMovieSelected(movie)"></mat-row>
       </mat-table>
+      <mat-paginator #moviePaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
+      </mat-paginator>
     </div>
 
   `,
@@ -84,6 +86,7 @@ export class MovieListComponent implements OnInit, AfterViewInit {
   @Input() public filterable = true;
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   public dataSource = new MatTableDataSource<Movie>();
   public displayedColumns = ['id', 'title', 'genre', 'description', 'actors', 'rating'];
@@ -101,6 +104,7 @@ export class MovieListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   public applyFilter() {
