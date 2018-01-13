@@ -51,7 +51,6 @@ export class MovieService {
       .map(movieLists => movieLists[0].concat(movieLists[1]))
       .do(movies => movies.length ? this.messageService.info(`MovieService: found movies for query: ${query}`) :
         this.messageService.error(`MovieService: no movies for query: ${query}`));
-
   }
 
   public deleteMovie(movie: number | Movie): void {
