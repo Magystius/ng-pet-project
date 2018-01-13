@@ -45,10 +45,11 @@ export class MovieService {
 
   public searchMovie(query: string): Observable<Array<Movie>> {
     const queryByTitle = this.createGetRequest<Array<Movie>>('/api/movies/?title=.*' + query + '.*');
+    const queryByGenre = this.createGetRequest<Array<Movie>>('/api/movies/?genre=.*' + query + '.*');
     const queryByActor = this.createGetRequest<Array<Movie>>('/api/movies/?actors=.*' + query + '.*');
 
-    return zip(queryByTitle, queryByActor)
-      .map(movieLists => movieLists[0].concat(movieLists[1]))
+    return zip(queryByTitle, queryByGenre, queryByActor)
+      .map(movieLists => movieLists[0].concat(movieLists[1]).concat(movieLists[2])) // TODO: optimize this
       .do(movies => movies.length ? this.messageService.info(`MovieService: found movies for query: ${query}`) :
         this.messageService.error(`MovieService: no movies for query: ${query}`));
   }
