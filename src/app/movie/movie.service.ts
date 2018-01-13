@@ -12,6 +12,10 @@ import {MessageService} from '../message/message.service';
 import 'rxjs/add/operator/catch';
 import {of} from 'rxjs/observable/of';
 import {zip} from 'rxjs/observable/zip';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/switchMap';
+import {from} from 'rxjs/observable/from';
+import 'rxjs/add/operator/max';
 
 @Injectable()
 export class MovieService {
@@ -52,6 +56,26 @@ export class MovieService {
       .map(movieLists => movieLists[0].concat(movieLists[1]).concat(movieLists[2])) // TODO: optimize this
       .do(movies => movies.length ? this.messageService.info(`MovieService: found movies for query: ${query}`) :
         this.messageService.error(`MovieService: no movies for query: ${query}`));
+  }
+
+  public createMovie(movie: Movie): void {
+    this.createGetRequest<Array<Movie>>('/api/movies/')
+      .mergeMap(movies => from(movies))
+      .max((a: Movie, b: Movie) => a.id < b.id ? -1 : 1)
+      .map(movieWithHighestId => movieWithHighestId.id)
+      .switchMap(maxId => {
+        movie.id = maxId + 1;
+        return this.http
+          .post<Movie>('/api/movies/', movie)
+          .retry(3)
+          .catch(error => {
+            this._logError(error);
+            return of(error);
+          })
+          .do(error => !error ? this.messageService.success(`MovieService: created movie #${movie.id}`) :
+            this.messageService.error(`MovieService: error while creating movie #${movie.id}`));
+      })
+      .subscribe(() => this.getMovies());
   }
 
   public updateMovie(movie: Movie): void {

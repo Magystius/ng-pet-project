@@ -7,5 +7,6 @@ export class Movie {
               public description?: string,
               public actors?: Array<string>,
               public rating?: number) {
+    this.actors = this.actors || [];
   }
 }

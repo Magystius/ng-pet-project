@@ -9,6 +9,10 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
     <app-loading [isLoading]="isLoadingResults"></app-loading>
     <h1>Overview</h1>
     <mat-menu #movieMenu="matMenu">
+      <button mat-menu-item color="accent" (click)="onNew()">
+        <mat-icon>mode_edit</mat-icon>
+        <span>create movie</span>
+      </button>
       <button mat-menu-item color="accent" (click)="onSave()" [disabled]="!selectedMovie">
         <mat-icon>save</mat-icon>
         <span>save movie</span>
@@ -70,6 +74,10 @@ export class OverviewPageComponent implements OnInit {
   }
 
   public onSave() {
-    this.movieService.updateMovie(this.selectedMovie);
+    this.selectedMovie.id === 0 ? this.movieService.createMovie(this.selectedMovie) : this.movieService.updateMovie(this.selectedMovie); // TODO: wow much skill such safe
+  }
+
+  public onNew() {
+    this.selectedMovie = new Movie(0, 'new movie');
   }
 }
