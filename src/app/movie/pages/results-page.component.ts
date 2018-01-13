@@ -6,11 +6,16 @@ import {MovieService} from '../movie.service';
 @Component({
   selector: 'app-results-page',
   template: `
-    <h1>Results: </h1>
-    <h4>searched query: {{query}}</h4>
-    <app-movie-list [(selectedMovies)]="selectedMovies" [selectable]="true"></app-movie-list>
+    <h1>Results </h1>
+    <h4>searched query: <em>{{query}}</em></h4>
+    <app-movie-list [(selectedMovies)]="selectedMovies" [selectable]="false" [filterable]="false"></app-movie-list>
   `,
-  styles: []
+  styles: [`
+    h4 {
+      padding-bottom: 20px;
+      color: gray;
+    }
+  `]
 })
 export class ResultsPageComponent implements OnInit {
 
