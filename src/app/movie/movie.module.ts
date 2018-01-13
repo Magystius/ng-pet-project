@@ -7,10 +7,12 @@ import {MessageModule} from '../message/message.module';
 import {MovieListComponent} from './movie-list.component';
 import {DashboardPageComponent} from './pages/dashboard-page.component';
 import {ResultsPageComponent} from './pages/results-page.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     NgMaterialModule,
     MessageModule
   ],
