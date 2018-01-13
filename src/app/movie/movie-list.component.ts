@@ -2,6 +2,7 @@ import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild
 import {Movie} from './movie';
 import {MovieService} from './movie.service';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-movie-list',
@@ -18,6 +19,20 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
         </mat-form-field>
       </div>
       <mat-table #movieTable [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="asc">
+        <ng-container matColumnDef="select">
+          <mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="toggleAll()"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let movie">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="toggleSelection(movie.id)"
+                          [checked]="selection.isSelected(movie.id)">
+            </mat-checkbox>
+          </mat-cell>
+        </ng-container>
         <ng-container matColumnDef="id">
           <mat-header-cell *matHeaderCellDef mat-sort-header> #</mat-header-cell>
           <mat-cell *matCellDef="let movie"> {{movie.id}}</mat-cell>
@@ -71,9 +86,15 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
       flex-direction: column;
       min-width: 300px;
     }
+
     .mat-table {
       overflow: auto;
       max-height: 500px;
+    }
+
+    .mat-column-select {
+      overflow: initial;
+      max-width: 75px;
     }
     .mat-column-description {
       min-width: 200px;
@@ -81,10 +102,20 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
   `]
 })
 export class MovieListComponent implements OnInit, AfterViewInit {
-  @Input() public selectedMovies: Array<Movie>;
-  @Output() public selectedMoviesChange = new EventEmitter<Array<Movie>>();
+  @Input()
+  set selectedMovies(movies: Array<Movie>) {
+    this.selection.clear();
+    movies.forEach(movie => this.selection.select(movie.id));
+  }
+
   @Input() public filterable = true;
 
+  @Input()
+  set selectable(selectable: boolean) {
+    selectable ? this.displayedColumns.unshift('select') : this.displayedColumns.filter(column => column !== 'select');
+  }
+
+  @Output() public selectedMoviesChange = new EventEmitter<Array<Movie>>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -92,8 +123,12 @@ export class MovieListComponent implements OnInit, AfterViewInit {
   public displayedColumns = ['id', 'title', 'genre', 'description', 'actors', 'rating'];
   public filterValue = '';
 
+  public selection = new SelectionModel<number>(true, []);
+  private movies: Array<Movie> = [];
+
   constructor(private movieService: MovieService) {
     this.movieService.movies$.subscribe(movies => {
+      this.movies = movies;
       this.dataSource.data = movies;
     });
   }
@@ -109,6 +144,12 @@ export class MovieListComponent implements OnInit, AfterViewInit {
 
   public applyFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
+    const filteredMovieIds = this.dataSource.filteredData
+      .map(filteredMovie => filteredMovie.id);
+    this.movies
+      .filter(movie => !filteredMovieIds.includes(movie.id))
+      .forEach(movie => this.selection.deselect(movie.id));
+    this.emitSelectedMovieChange();
   }
 
   public clearFilter() {
@@ -116,13 +157,28 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     this.applyFilter();
   }
 
-  public isMovieSelected(movie: Movie) {
-    const isActive = this.selectedMovies ? this.selectedMovies
-      .map(current => current.id)
-      .some((currentId, index, movieIds) => movieIds.includes(movie.id)) : false;
+  public isAllSelected(): boolean {
+    return this.selection.selected.length === this.dataSource.data.length;
+  }
+
+  public toggleAll() {
+    this.isAllSelected() ? this.selection.clear() : this.dataSource.data.forEach(movie => this.selection.select(movie.id));
+    this.emitSelectedMovieChange();
+  }
+
+  public toggleSelection(movieId: number) {
+    this.selection.toggle(movieId);
+    this.emitSelectedMovieChange();
+  }
+
+  private emitSelectedMovieChange() {
+    this.selectedMoviesChange.emit(this.movies
+      .filter(movie => this.selection.selected.includes(movie.id)));
+  }
+
+  public isMovieSelected(movie: Movie): any {
     return {
-      'list-group-item': true,
-      'active': isActive
+      'active': this.selection.selected ? this.selection.selected.includes(movie.id) : false
     };
   }
 

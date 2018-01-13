@@ -8,7 +8,7 @@ import {MovieService} from '../movie.service';
   template: `
     <h1>Results: </h1>
     <h4>searched query: {{query}}</h4>
-    <app-movie-list [(selectedMovies)]="selectedMovies"></app-movie-list>
+    <app-movie-list [(selectedMovies)]="selectedMovies" [selectable]="true"></app-movie-list>
   `,
   styles: []
 })
