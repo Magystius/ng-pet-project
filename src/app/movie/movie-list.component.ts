@@ -68,7 +68,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
   `,
   styles: [`
     .active {
-      background-color: aqua;
+      background-color: #b2dfdb;
     }
 
     .movie-table-header {
