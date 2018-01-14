@@ -6,21 +6,10 @@
 
 # compiled output
 /dist
-/tmp
-/out-tsc
 
 # dependencies
 /node_modules
 
 # IDEs and editors
 /.idea
-
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-testem.log
-/typings
 

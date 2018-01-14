@@ -5,7 +5,7 @@ import {Component} from '@angular/core';
   template: `
     <h1>404 - NOT FOUND</h1>
   `,
-  styles:[`
+  styles: [`
     h1 {
       display: flex;
       flex-direction: column;
