@@ -1,5 +1,3 @@
-======================== **SOURCE CODE** ========================
-
 MIT License
 
 Copyright (c) 2017 Tim Dekarz
@@ -22,7 +20,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-======================== **IMAGES** ========================
+Creative Common 0 (Zero) License
 
 The laws of most jurisdictions throughout the world automatically confer exclusive Copyright and Related Rights (defined below) upon the creator and subsequent owner(s) (each and all, an "owner") of an original work of authorship and/or a database (each, a "Work").
 
