@@ -1,0 +1,34 @@
+h6 {
+  text-align: left;
+}
+
+.centered {
+  text-align: center;
+  display: inline-block;
+}
+
+.movie-form-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.movie-form {
+  text-align: center;
+  width: 100%;
+  padding: 25px;
+}
+
+mat-slider {
+  width: 100%;
+}
+
+.movie-full-width {
+  width: 50%;
+}
+
+@media (max-width: 800px) {
+  .movie-full-width {
+    width: 80%;
+  }
+}

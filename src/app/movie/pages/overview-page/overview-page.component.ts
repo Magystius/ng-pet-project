@@ -1,45 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Movie} from '../movie';
-import {MovieService} from '../movie.service';
+import {Movie} from '../../movie';
+import {MovieService} from '../../movie.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 
 @Component({
   selector: 'app-overview-page',
-  template: `
-    <app-loading [isLoading]="isLoadingResults"></app-loading>
-    <h1>Overview</h1>
-    <mat-menu #movieMenu="matMenu">
-      <button mat-menu-item color="accent" (click)="onNew()">
-        <mat-icon>mode_edit</mat-icon>
-        <span>create movie</span>
-      </button>
-      <button mat-menu-item color="accent" (click)="onSave()" [disabled]="!selectedMovie">
-        <mat-icon>save</mat-icon>
-        <span>save movie</span>
-      </button>
-      <button mat-menu-item color="warn" (click)="onDelete()" [disabled]="!checkedMovies.length">
-        <mat-icon>delete_forever</mat-icon>
-        <span>delete checked movies</span>
-      </button>
-    </mat-menu>
-    <button class="movieMenu" mat-raised-button [matMenuTriggerFor]="movieMenu" color="primary">
-      <mat-icon>menu</mat-icon>
-      Actions
-    </button>
-    <app-movie-list [(checkedMovies)]="checkedMovies" (selectedMovieChange)="onSelectedMovieChange($event)"
-                    [selectable]="true" [filterable]="true"></app-movie-list>
-    <ng-container *ngIf="selectedMovie">
-      <app-movie-form [movie]="selectedMovie"></app-movie-form>
-    </ng-container>
-  `,
-  styles: [`
-    h1 {
-      margin-bottom: 30px;
-    }
-    .movieMenu {
-      margin-bottom: 20px;
-    }
-  `]
+  templateUrl: './overview-page.component.html',
+  styleUrls: ['./overview-page.component.scss']
 })
 export class OverviewPageComponent implements OnInit {
 

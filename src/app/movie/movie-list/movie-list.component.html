@@ -1,0 +1,59 @@
+<app-loading [isLoading]="isLoadingResults"></app-loading>
+<div class="movie-table-container mat-elevation-z8">
+  <div class="movie-table-header" *ngIf="filterable">
+    <mat-form-field>
+      <input matInput [(ngModel)]="filterValue" (keyup)="applyFilter()" placeholder="Filter" type="text">
+      <mat-hint align="start">fuzzy search all the movies</mat-hint>
+      <mat-hint align="end">{{filterValue.length}} / 256</mat-hint>
+      <button mat-button *ngIf="filterValue" matSuffix mat-icon-button matTooltip="Clear!" matTooltipPosition="above"
+              (click)="clearFilter()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <mat-table #movieTable [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="asc">
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="toggleAll()"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let movie">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="toggleCheck(movie.id)"
+                      [checked]="selection.isSelected(movie.id)">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> #</mat-header-cell>
+      <mat-cell *matCellDef="let movie"> {{movie.id}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Title</mat-header-cell>
+      <mat-cell *matCellDef="let movie"><strong>{{movie.title}}</strong></mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="genre">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Genre</mat-header-cell>
+      <mat-cell *matCellDef="let movie"> {{movie.genre | capitalize}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Description</mat-header-cell>
+      <mat-cell *matCellDef="let movie"> {{movie.description | trim: 100}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="actors">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Actors</mat-header-cell>
+      <mat-cell *matCellDef="let movie"> {{movie.actors | list}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="rating">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Rating</mat-header-cell>
+      <mat-cell *matCellDef="let movie"> {{movie.rating}}</mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let movie; columns: displayedColumns" [ngClass]="getMovieStyle(movie)"
+             (click)="onSelectedMovie(movie)"></mat-row>
+  </mat-table>
+  <mat-paginator #moviePaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
+  </mat-paginator>
+</div>

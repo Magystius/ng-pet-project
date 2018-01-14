@@ -1,0 +1,26 @@
+h1 {
+  text-align: center;
+}
+
+.col-md-3 {
+  display: flex;
+  flex-direction: column;
+}
+
+.movie-card {
+  margin-top: 10px;
+  flex: 1;
+}
+
+.movie-card-actions {
+  text-align: right;
+}
+
+.movie-card-action {
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+.actor {
+  font-size: small;
+}

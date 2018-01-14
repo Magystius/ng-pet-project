@@ -1,0 +1,45 @@
+<div class="movie-form-container mat-elevation-z8">
+  <form class="movie-form">
+    <mat-form-field class="movie-full-width">
+      <input matInput placeholder="ID" disabled value="{{movie.id}}">
+    </mat-form-field>
+    <mat-form-field class="movie-full-width">
+      <input matInput placeholder="Title" name="title" [(ngModel)]="movie.title">
+    </mat-form-field>
+
+    <mat-form-field class="movie-full-width">
+      <mat-select placeholder="Genre" [(ngModel)]="movie.genre" name="genre">
+        <mat-option *ngFor="let genre of genres" [value]="genre">
+          {{genre | capitalize}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="movie-full-width">
+            <textarea matInput placeholder="Description" name="description"
+                      [(ngModel)]="movie.description" matTextareaAutosize matAutosizeMinRows="4"
+                      matAutosizeMaxRows="10">
+            </textarea>
+    </mat-form-field>
+
+    <mat-form-field class="movie-full-width">
+      <mat-chip-list #actorList>
+        <mat-chip *ngFor="let actor of movie.actors" [selectable]="false"
+                  [removable]="true" (remove)="removeActor(actor)">
+          {{actor}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="Actors"
+               [matChipInputFor]="actorList"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               (matChipInputTokenEnd)="addActor($event)"/>
+      </mat-chip-list>
+    </mat-form-field>
+
+    <div class="movie-full-width centered">
+      <h6>Rating</h6>
+      <mat-slider name="rating" [max]="10" [min]="0" step="1" [thumb-label]="true"
+                  [(ngModel)]="movie.rating"></mat-slider>
+    </div>
+  </form>
+</div>
