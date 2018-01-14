@@ -70,7 +70,7 @@ export class MovieService {
           .post<Movie>('/api/movies/', movie)
           .retry(3)
           .catch(error => {
-            this._logError(error);
+            MovieService._logError(error);
             return of(error);
           })
           .do(error => !error ? this.messageService.success(`MovieService: created movie #${movie.id}`) :
@@ -84,7 +84,7 @@ export class MovieService {
       .put<Movie>('/api/movies/' + movie.id, movie)
       .retry(3)
       .catch(error => {
-        this._logError(error);
+        MovieService._logError(error);
         return of(error);
       })
       .do(error => !error ? this.messageService.success(`MovieService: updated movie #${movie.id}`) :
@@ -98,7 +98,7 @@ export class MovieService {
       .delete<Movie>('/api/movies/' + id)
       .retry(3)
       .catch(error => {
-        this._logError(error);
+        MovieService._logError(error);
         return of(error);
       })
       .do(error => !error ? this.messageService.success(`MovieService: deleted movie #${id}`) :
@@ -106,7 +106,7 @@ export class MovieService {
       .subscribe(() => this.getMovies());
   }
 
-  private _logError(error: HttpErrorResponse): void {
+  private static _logError(error: HttpErrorResponse): void {
     if (!environment.production) {
       error.error instanceof Error ? console.log('error occured: ' + error.message) :
         console.log('server responsed with error: ' + error.message);
@@ -118,7 +118,7 @@ export class MovieService {
       .get<T>(url)
       .retry(3)
       .catch(error => {
-        this._logError(error);
+        MovieService._logError(error);
         return of(null);
       });
   }
