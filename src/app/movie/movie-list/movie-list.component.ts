@@ -15,9 +15,11 @@ export class MovieListComponent implements OnInit, AfterViewInit {
   set checkedMovies(movies: Array<Movie>) {
     this.selection.clear();
     movies.forEach(movie => this.selection.select(movie.id));
+    this.dataSource.data = this.sortBySelect ? this.movies.sort(this._sortBySelected()) : this.movies;
   }
 
   @Input() public filterable = true;
+  @Input() public sortBySelect = false;
 
   @Input()
   set selectable(selectable: boolean) {
@@ -41,7 +43,8 @@ export class MovieListComponent implements OnInit, AfterViewInit {
   constructor(private movieService: MovieService, private breakpointObserver: BreakpointObserver) {
     this.movieService.movies$.subscribe(movies => {
       this.movies = movies;
-      this.dataSource.data = movies;
+      this.dataSource.data = this.sortBySelect ? movies.sort(this._sortBySelected()) : movies;
+      // delete old movies
       const movieIds = movies.map(movie => movie.id);
       this.selection.selected
         .filter(id => !movieIds.includes(id))
@@ -117,6 +120,20 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     } else if (this.displayedColumns.indexOf('description') === -1) {
       this.displayedColumns.splice(this.displayedColumns.indexOf('genre') + 1, 0, 'description');
     }
+  }
+
+  private _sortBySelected() {
+    return (a: Movie, b: Movie) => {
+      const aIsSelected = this.selection.selected.includes(a.id);
+      const bIsSelected = this.selection.selected.includes(b.id);
+      if ((aIsSelected && bIsSelected) || (!aIsSelected && !bIsSelected)) {
+        return 0;
+      } else if (aIsSelected && !bIsSelected) {
+        return -1;
+      } else {
+        return 1;
+      }
+    };
   }
 
 }
