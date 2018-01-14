@@ -16,6 +16,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 import {from} from 'rxjs/observable/from';
 import 'rxjs/add/operator/max';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class MovieService {
@@ -106,8 +107,10 @@ export class MovieService {
   }
 
   private _logError(error: HttpErrorResponse): void {
-    error.error instanceof Error ? console.log('error occured: ' + error.message) :
-      console.log('server responsed with error: ' + error.message);
+    if (!environment.production) {
+      error.error instanceof Error ? console.log('error occured: ' + error.message) :
+        console.log('server responsed with error: ' + error.message);
+    }
   }
 
   private _createGetRequest<T>(url: string): Observable<T> {
