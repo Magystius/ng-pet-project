@@ -11,7 +11,8 @@
   "scripts": {
     "start": "./node_modules/.bin/ng serve --open",
     "build": "./node_modules/.bin/ng build --prod",
-    "lint": "./node_modules/.bin/ng lint"
+    "lint": "./node_modules/.bin/ng lint",
+    "tsc": "./node_modules/.bin/tsc"
   },
   "private": true,
   "dependencies": {
