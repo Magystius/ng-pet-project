@@ -26,8 +26,7 @@ import {Router} from '@angular/router';
         </form>
       </div>
     </nav>
-  `,
-  styles: []
+  `
 })
 export class NavbarComponent {
 
