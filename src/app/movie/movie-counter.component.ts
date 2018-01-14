@@ -29,7 +29,7 @@ export class MovieCounterComponent implements OnDestroy {
     this._subscription = this._counterSubject$
       .switchMap(endRange => {
         this.currentCounterValue = 0;
-        return timer(0, 200)
+        return timer(250, 150)
           .mapTo(1)
           .startWith(this.currentCounterValue)
           .scan((acc, currentValue) => acc + currentValue)
