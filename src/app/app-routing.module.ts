@@ -3,8 +3,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {NotFoundPageComponent} from './pages/not-found-page.component';
 import {LandingPageComponent} from './pages/landing-page.component';
 import {ResultsPageComponent} from './movie/pages/results-page.component';
-import {DashboardPageComponent} from './movie/pages/dashboard-page.component';
-import {OverviewPageComponent} from './movie/pages/overview-page.component';
+import {DashboardPageComponent} from './movie/pages/dashboard-page/dashboard-page.component';
+import {OverviewPageComponent} from './movie/pages/overview-page/overview-page.component';
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
@@ -12,7 +12,7 @@ const routes: Routes = [
   {path: 'overview', component: OverviewPageComponent},
   {path: 'overview/:id', component: OverviewPageComponent},
   {path: 'results/:query', component: ResultsPageComponent},
-  {path: '*', component: NotFoundPageComponent}
+  {path: '**', component: NotFoundPageComponent}
 ];
 
 @NgModule({
