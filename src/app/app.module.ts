@@ -27,7 +27,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forFeature(InMemoryMovieServiceService, {
       apiBase: 'api/',
-      delay: 2000,
+      delay: 1000,
       delete404: true
     }),
     FormsModule,
