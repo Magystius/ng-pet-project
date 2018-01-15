@@ -22,14 +22,14 @@ export class MovieFormComponent implements OnInit {
   ngOnInit() {
   }
 
-  public addActor(actorEvent: MatChipInputEvent) {
+  public addActor(actorEvent: MatChipInputEvent): void {
     if (actorEvent.value) {
       this.movie.actors.push(actorEvent.value.trim());
     }
     actorEvent.input.value = '';
   }
 
-  public removeActor(actor: string) {
+  public removeActor(actor: string): void {
     const index = this.movie.actors.indexOf(actor);
     if (index >= 0) {
       this.movie.actors.splice(index, 1);

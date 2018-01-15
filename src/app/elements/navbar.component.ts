@@ -35,7 +35,7 @@ export class NavbarComponent {
   constructor(private router: Router) {
   }
 
-  public onSearch() {
+  public onSearch(): void {
     this.router.navigate(['results', this.query]);
   }
 

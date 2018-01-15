@@ -29,22 +29,24 @@ export class OverviewPageComponent implements OnInit {
     });
   }
 
-  public onSelectedMovieChange($event: Movie) {
+  public onSelectedMovieChange($event: Movie): void {
     this.router.navigate(['overview', $event.id]);
   }
 
-  public onDelete() {
+  public onDelete(): void {
     if (this.selectedMovie && this.checkedMovies.map(movie => movie.id).includes(this.selectedMovie.id)) {
-      this.selectedMovie = null;
+      this.selectedMovie = null; // TODO: hm...
     }
     this.checkedMovies.forEach(movie => this.movieService.deleteMovie(movie));
   }
 
-  public onSave() {
-    this.selectedMovie.id === 0 ? this.movieService.createMovie(this.selectedMovie) : this.movieService.updateMovie(this.selectedMovie); // TODO: wow much skill such safe
+  public onSave(): void {
+    this.selectedMovie.id === 0 ? // TODO: wow much skill such safe
+      this.movieService.createMovie(this.selectedMovie) :
+      this.movieService.updateMovie(this.selectedMovie);
   }
 
-  public onNew() {
+  public onNew(): void {
     this.selectedMovie = new Movie(0, 'new movie');
   }
 }

@@ -31,7 +31,7 @@ export class DashboardPageComponent implements OnInit {
     this.movieService.getMovies();
   }
 
-  public getImageId(genre: Genre) {
+  public getImageId(genre: Genre): string {
     switch (genre) {
       case Genre.SCIENCE_FICTION: {
         return '/assets/science-fiction.jpg';
@@ -54,11 +54,11 @@ export class DashboardPageComponent implements OnInit {
     }
   }
 
-  public onMovieDelete(id: number) {
+  public onMovieDelete(id: number): void {
     this.movieService.deleteMovie(id);
   }
 
-  public onMovieEdit(id: number) {
+  public onMovieEdit(id: number): void {
     this.router.navigate(['overview', id]);
   }
 }

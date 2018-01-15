@@ -29,7 +29,8 @@ export class MovieService {
 
   public getMovies(): void {
     const request$: ConnectableObservable<Array<Movie>> = this._createGetRequest<Array<Movie>>('/api/movies')
-      .do(movies => movies.length ? this.messageService.info('MovieService: fetched movies') :
+      .do(movies => movies.length ?
+        this.messageService.info('MovieService: fetched movies') :
         this.messageService.error('MovieService: no movies found'))
       .publish();
 
@@ -43,19 +44,21 @@ export class MovieService {
   }
 
   public getMovie(movieId: number): Observable<Movie> {
-    return this._createGetRequest<Movie>('/api/movies/' + movieId)
-      .do(movie => movie ? this.messageService.info(`MovieService: fetched movie #${movieId}`) :
+    return this._createGetRequest<Movie>(`/api/movies/${movieId}`)
+      .do(movie => movie ?
+        this.messageService.info(`MovieService: fetched movie #${movieId}`) :
         this.messageService.error(`MovieService: no movie for #${movieId}`));
   }
 
   public searchMovie(query: string): Observable<Array<Movie>> {
-    const queryByTitle = this._createGetRequest<Array<Movie>>('/api/movies/?title=.*' + query + '.*');
-    const queryByGenre = this._createGetRequest<Array<Movie>>('/api/movies/?genre=.*' + query + '.*');
-    const queryByActor = this._createGetRequest<Array<Movie>>('/api/movies/?actors=.*' + query + '.*');
+    const queryByTitle = this._createGetRequest<Array<Movie>>(`/api/movies/?title=.*${query}.*`);
+    const queryByGenre = this._createGetRequest<Array<Movie>>(`/api/movies/?genre=.*${query}.*`);
+    const queryByActor = this._createGetRequest<Array<Movie>>(`/api/movies/?actors=.*${query}.*`);
 
     return zip(queryByTitle, queryByGenre, queryByActor)
       .map(movieLists => movieLists[0].concat(movieLists[1]).concat(movieLists[2])) // TODO: optimize this
-      .do(movies => movies.length ? this.messageService.info(`MovieService: found movies for query: ${query}`) :
+      .do(movies => movies.length ?
+        this.messageService.info(`MovieService: found movies for query: ${query}`) :
         this.messageService.error(`MovieService: no movies for query: ${query}`));
   }
 
@@ -73,7 +76,8 @@ export class MovieService {
             MovieService._logError(error);
             return of(error);
           })
-          .do(error => !error ? this.messageService.success(`MovieService: created movie #${movie.id}`) :
+          .do(error => !error ?
+            this.messageService.success(`MovieService: created movie #${movie.id}`) :
             this.messageService.error(`MovieService: error while creating movie #${movie.id}`));
       })
       .subscribe(() => this.getMovies());
@@ -81,13 +85,14 @@ export class MovieService {
 
   public updateMovie(movie: Movie): void {
     this.http
-      .put<Movie>('/api/movies/' + movie.id, movie)
+      .put<Movie>(`/api/movies/${movie.id}`, movie)
       .retry(3)
       .catch(error => {
         MovieService._logError(error);
         return of(error);
       })
-      .do(error => !error ? this.messageService.success(`MovieService: updated movie #${movie.id}`) :
+      .do(error => !error ?
+        this.messageService.success(`MovieService: updated movie #${movie.id}`) :
         this.messageService.error(`MovieService: no movie found for #${movie.id}`))
       .subscribe(() => this.getMovies());
   }
@@ -95,21 +100,23 @@ export class MovieService {
   public deleteMovie(movie: number | Movie): void {
     const id = typeof movie === 'number' ? movie : movie.id;
     this.http
-      .delete<Movie>('/api/movies/' + id)
+      .delete<Movie>(`/api/movies/${id}`)
       .retry(3)
       .catch(error => {
         MovieService._logError(error);
         return of(error);
       })
-      .do(error => !error ? this.messageService.success(`MovieService: deleted movie #${id}`) :
+      .do(error => !error ?
+        this.messageService.success(`MovieService: deleted movie #${id}`) :
         this.messageService.error(`MovieService: no movie for #${id}`))
       .subscribe(() => this.getMovies());
   }
 
   private static _logError(error: HttpErrorResponse): void {
     if (!environment.production) {
-      error.error instanceof Error ? console.log('error occured: ' + error.message) :
-        console.log('server responsed with error: ' + error.message);
+      error.error instanceof Error ?
+        console.log(`error occured: ${error.message}`) :
+        console.log(`server responsed with error: ${error.message}`);
     }
   }
 

@@ -68,7 +68,7 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  public applyFilter() {
+  public applyFilter(): void {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
     const filteredMovieIds = this.dataSource.filteredData
       .map(filteredMovie => filteredMovie.id);
@@ -78,7 +78,7 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     this._emitCheckedMovieChange();
   }
 
-  public clearFilter() {
+  public clearFilter(): void {
     this.filterValue = '';
     this.applyFilter();
   }
@@ -87,12 +87,12 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     return this.selection.selected.length === this.dataSource.data.length;
   }
 
-  public toggleAll() {
+  public toggleAll(): void {
     this.isAllSelected() ? this.selection.clear() : this.dataSource.data.forEach(movie => this.selection.select(movie.id));
     this._emitCheckedMovieChange();
   }
 
-  public toggleCheck(movieId: number) {
+  public toggleCheck(movieId: number): void {
     this.selection.toggle(movieId);
     this._emitCheckedMovieChange();
   }
@@ -104,17 +104,17 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     };
   }
 
-  public onSelectedMovie(movie: Movie) {
+  public onSelectedMovie(movie: Movie): void {
     this.selectedMovie = movie;
     this.selectedMovieChange.emit(movie);
   }
 
-  private _emitCheckedMovieChange() {
+  private _emitCheckedMovieChange(): void {
     this.checkedMoviesChange.emit(this.movies
       .filter(movie => this.selection.selected.includes(movie.id)));
   }
 
-  private _determineDisplayedColumns(smallScreen: boolean) {
+  private _determineDisplayedColumns(smallScreen: boolean): void {
     if (smallScreen && this.displayedColumns.indexOf('description') !== -1) {
       this.displayedColumns.splice(this.displayedColumns.indexOf('description'), 1);
     } else if (this.displayedColumns.indexOf('description') === -1) {
@@ -122,7 +122,7 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private _sortBySelected() {
+  private _sortBySelected(): any {
     return (a: Movie, b: Movie) => {
       const aIsSelected = this.selection.selected.includes(a.id);
       const bIsSelected = this.selection.selected.includes(b.id);
